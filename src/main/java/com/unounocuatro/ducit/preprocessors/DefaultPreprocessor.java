@@ -18,30 +18,54 @@ public class DefaultPreprocessor implements Preprocessor {
 		int first = 0;
 		int last = 0;
 		
-		for(int j=0; j<image.getWidth(); j++){
+		for(int j=0; j<image.getWidth(); j+=10){
 			for(int i=0; i<image.getHeight(); i++){
 				Color c = new Color(image.getRGB(j, i));
 				if(c.getRGB() == Color.WHITE.getRGB()){
-					if(count == 0)
-						first = i;
 					count++;						
 				} else{
-					if(count>50)
+					if(count>50){
 						last = i-1;
-					if(last==0)
-						first = 0;
+						first = last - count;
+					}
+						
 					count = 0;
 				}
 			}	
 		}
 		
-		first = last -80;
-		last = last +15;
+		int wfirst = first-15;
+		int wlast = last +15;
+		
+		
 		
 		for(int j=0; j<image.getWidth(); j++){
 			for(int i=0; i<image.getHeight(); i++){
-				if(i<first || i>last)
+				if(i<wfirst || i>wlast)
 					image.setRGB(j, i, Color.BLACK.getRGB());
+			}	
+		}
+		
+		
+		int limit = Integer.MAX_VALUE;
+		for(int j=first; j<last; j++){
+			for(int i=0; i<image.getWidth(); i++){
+				Color c = new Color(image.getRGB(i, j));
+				if(c.getRGB() != Color.WHITE.getRGB() && i<limit)
+					image.setRGB(i, j, Color.BLACK.getRGB());
+				else if(limit == Integer.MAX_VALUE)
+					limit = i;
+			}	
+		}
+		
+		limit = Integer.MIN_VALUE;
+		for(int j=first; j<last; j++){
+			for(int i=image.getWidth()-1; i>=0; i--){
+				Color c = new Color(image.getRGB(i, j));
+				if(c.getRGB() != Color.WHITE.getRGB() && i>limit)
+					image.setRGB(i, j, Color.BLACK.getRGB());
+				else if(limit == Integer.MIN_VALUE)
+					limit = i;
 			}	
 		}
 		
