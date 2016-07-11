@@ -2,6 +2,8 @@ package com.unounocuatro.ducit.ducit;
 
 import java.io.IOException;
 
+import com.unounocuatro.ducit.daos.DucitDAO;
+import com.unounocuatro.ducit.daos.DucitDaoImpl;
 import com.unounocuatro.ducit.engines.DefaultEngine;
 import com.unounocuatro.ducit.engines.Engine;
 
@@ -13,6 +15,8 @@ public class App
         	Engine engine = DefaultEngine.getInstance();
 			String result = engine.scan("./src/main/resources/images/dummy.jpg");
 			System.out.println(result);
+			DucitDAO dao = new DucitDaoImpl();
+			System.out.println(dao.getWordMeaning("perro"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
