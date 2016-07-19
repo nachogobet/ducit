@@ -1,10 +1,19 @@
 package com.unounocuatro.ducit.daos;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class DucitDaoImpl implements DucitDAO{
 
@@ -25,6 +34,44 @@ public class DucitDaoImpl implements DucitDAO{
 		if(rs.next())
 			return rs.getString(1);
 		return null;
+	}
+
+	public String getDefinition(String word) throws Exception {
+		int i=0;
+		URL url = new URL("https://es.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + word.replace(" ", "%20") + "&format=json");
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.setRequestProperty("Accept", "application/json");
+
+		if (conn.getResponseCode() != 200) {
+			throw new RuntimeException("Failed : HTTP error code : "
+					+ conn.getResponseCode());
+		}
+
+		BufferedReader br = new BufferedReader(new InputStreamReader(
+				(conn.getInputStream())));
+
+		StringBuilder sb = new StringBuilder();
+
+		String line;
+		while ((line = br.readLine()) != null) {
+			sb.append(line);
+		}
+		
+		JsonElement jelement = new JsonParser().parse(sb.toString());
+		JsonObject  jobject = jelement.getAsJsonObject();
+		sb.setLength(0);
+		int size = jobject.getAsJsonObject("query").getAsJsonArray("search").size();
+		while(i < size){
+			JsonElement locObj = jobject.getAsJsonObject("query")
+					.getAsJsonArray("search").get(i);
+			sb.append(locObj.getAsJsonObject().get("snippet").getAsString());
+			i++;
+		}
+		
+		
+
+		return sb.toString();
 	}
 
 }

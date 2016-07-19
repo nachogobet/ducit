@@ -17,6 +17,7 @@ public class App
 			System.out.println(result);
 			DucitDAO dao = new DucitDaoImpl();
 			System.out.println(dao.getWordMeaning("perro"));
+			System.out.println(dao.getDefinition("peninsula de valdes"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
