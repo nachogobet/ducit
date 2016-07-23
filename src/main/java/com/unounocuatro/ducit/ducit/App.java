@@ -13,11 +13,11 @@ public class App
     {	        
         try {
         	Engine engine = DefaultEngine.getInstance();
-			String result = engine.scan("./src/main/resources/images/dummy.jpg");
+			String result = engine.scan("./src/main/resources/images/pic.png");
 			System.out.println(result);
 			DucitDAO dao = new DucitDaoImpl();
-			System.out.println(dao.getWordMeaning("perro"));
-			System.out.println(dao.getDefinition("peninsula de valdes"));
+			//System.out.println(dao.getWordMeaning("perro"));
+			//System.out.println(dao.getDefinition("peninsula de valdes"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
