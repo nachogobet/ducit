@@ -47,18 +47,20 @@ public class DefaultPreprocessor implements Preprocessor {
 		}
 		
 		
-		int limit = Integer.MAX_VALUE;
+		/*int limit = Integer.MAX_VALUE;
 		for(int j=first; j<last; j++){
 			for(int i=0; i<image.getWidth(); i++){
-				Color c = new Color(image.getRGB(i, j));
-				if(c.getRGB() != Color.WHITE.getRGB() && i<limit)
-					image.setRGB(i, j, Color.BLACK.getRGB());
-				else if(limit == Integer.MAX_VALUE)
-					limit = i;
+				if(j<image.getHeight()){
+					Color c = new Color(image.getRGB(i, j));
+					if(c.getRGB() != Color.WHITE.getRGB() && i<limit)
+						image.setRGB(i, j, Color.BLACK.getRGB());
+					else if(limit == Integer.MAX_VALUE)
+						limit = i;
+				}			
 			}	
-		}
+		}*/
 		
-		limit = Integer.MIN_VALUE;
+		/*limit = Integer.MIN_VALUE;
 		for(int j=first; j<last; j++){
 			for(int i=image.getWidth()-1; i>=0; i--){
 				Color c = new Color(image.getRGB(i, j));
@@ -67,7 +69,7 @@ public class DefaultPreprocessor implements Preprocessor {
 				else if(limit == Integer.MIN_VALUE)
 					limit = i;
 			}	
-		}
+		}*/
 		
 		return image;
 	}

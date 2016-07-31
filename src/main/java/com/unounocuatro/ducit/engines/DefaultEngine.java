@@ -7,7 +7,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import com.unounocuatro.ducit.preprocessors.DefaultPreprocessor;
-import com.unounocuatro.ducit.preprocessors.OrangePreprocessor;
 import com.unounocuatro.ducit.preprocessors.Preprocessor;
 import com.unounocuatro.ducit.processors.DefaultProcessor;
 import com.unounocuatro.ducit.processors.Processor;
@@ -61,7 +60,7 @@ public class DefaultEngine implements Engine {
 	}
 
 	private void setPreprocessor() {
-		this.preprocessor = new OrangePreprocessor();
+		this.preprocessor = new DefaultPreprocessor();
 		
 	}
 	

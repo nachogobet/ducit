@@ -6,4 +6,6 @@ public interface DucitDAO {
 	String getWordMeaning(String word) throws SQLException;
 	
 	String getDefinition(String word) throws Exception;
+	
+	String getSynonyms(String word);
 }

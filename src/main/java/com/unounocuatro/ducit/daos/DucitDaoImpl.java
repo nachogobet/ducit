@@ -5,15 +5,25 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.scribe.builder.ServiceBuilder;
+import org.scribe.model.OAuthConstants;
+import org.scribe.model.OAuthRequest;
+import org.scribe.model.Response;
+import org.scribe.model.Token;
+import org.scribe.model.Verb;
+import org.scribe.oauth.OAuthService;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.unounocuatro.ducit.apis.ApiCulturApi;
 
 public class DucitDaoImpl implements DucitDAO{
 
@@ -74,4 +84,42 @@ public class DucitDaoImpl implements DucitDAO{
 		return sb.toString();
 	}
 
+	public String getSynonyms(String word) {
+		return sendRequest(word, "es_ES", "IODQDjJR3cktaXyNWmtK", "json"); 
+	}
+
+	final String endpoint = "http://thesaurus.altervista.org/thesaurus/v1"; 
+
+	  private String sendRequest(String word, String language, String key, String output) { 
+	    try { 
+	      URL serverAddress = new URL(endpoint + "?word="+URLEncoder.encode(word, "UTF-8")+"&language="+language+"&key="+key+"&output="+output); 
+	      HttpURLConnection connection = (HttpURLConnection)serverAddress.openConnection(); 
+	      connection.connect(); 
+	      int rc = connection.getResponseCode(); 
+	      if (rc == 200) { 
+	        String line = null;         
+	        BufferedReader br = new BufferedReader(new java.io.InputStreamReader(connection.getInputStream())); 
+	        StringBuilder sb = new StringBuilder(); 
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+			}
+			
+			JsonElement jelement = new JsonParser().parse(sb.toString());
+			JsonObject  jobject = jelement.getAsJsonObject();
+			sb.setLength(0);
+			int size = jobject.getAsJsonArray("response").size();
+			int i=0;
+			while(i < size){
+				JsonElement locObj = jobject.getAsJsonArray("response").get(i);
+				sb.append(locObj.getAsJsonObject().get("list").getAsJsonObject().get("synonyms"));
+				i++;
+			}
+			return sb.toString();
+	      } else System.out.println("HTTP error:"+rc); 
+	      connection.disconnect(); 
+	    } catch (Exception e) { 
+	      e.printStackTrace(); 
+	    }
+		return null; 
+	  } 
 }
