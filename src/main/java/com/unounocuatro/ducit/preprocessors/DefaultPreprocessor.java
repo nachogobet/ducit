@@ -2,10 +2,14 @@ package com.unounocuatro.ducit.preprocessors;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DefaultPreprocessor implements Preprocessor {
 	
-	public BufferedImage doPreprocess(BufferedImage image) {
+	public BufferedImage doPreprocess(BufferedImage image, BufferedImage binary) {
+		
+		List<Integer> coordinates = new ArrayList<Integer>();
 
 		for(int i=0; i<image.getWidth(); i++){
 			for(int j=0; j<image.getHeight(); j++){
@@ -15,8 +19,7 @@ public class DefaultPreprocessor implements Preprocessor {
 			}	
 		}
 		int count = 0;
-		int first = 0;
-		int last = 0;
+
 		
 		for(int j=0; j<image.getWidth(); j+=10){
 			for(int i=0; i<image.getHeight(); i++){
@@ -25,8 +28,8 @@ public class DefaultPreprocessor implements Preprocessor {
 					count++;						
 				} else{
 					if(count>50){
-						last = i-1;
-						first = last - count;
+						coordinates.add(i-1-count-15);
+						coordinates.add(i-1+15);
 					}
 						
 					count = 0;
@@ -34,17 +37,18 @@ public class DefaultPreprocessor implements Preprocessor {
 			}	
 		}
 		
-		int wfirst = first-15;
-		int wlast = last +15;
 		
-		
-		
-		for(int j=0; j<image.getWidth(); j++){
-			for(int i=0; i<image.getHeight(); i++){
-				if(i<wfirst || i>wlast)
-					image.setRGB(j, i, Color.BLACK.getRGB());
-			}	
+		for(int z=0; z<coordinates.size(); z+=2){
+			int wfirst = coordinates.get(z);
+			int wlast = coordinates.get(z+1);
+			for(int j=0; j<image.getWidth(); j++){
+				for(int i=0; i<image.getHeight(); i++){
+					if(i<wfirst || i>wlast)
+						image.setRGB(j, i, Color.BLACK.getRGB());
+				}	
+			}
 		}
+		
 		
 		
 		/*int limit = Integer.MAX_VALUE;
@@ -95,6 +99,11 @@ public class DefaultPreprocessor implements Preprocessor {
 	
 	private int getRGB(Color c){
 		return 65536 * c.getRed() + 256 * c.getGreen() + c.getBlue();
+	}
+
+	public BufferedImage toBinary(BufferedImage image) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import com.unounocuatro.ducit.preprocessors.DefaultPreprocessor;
+import com.unounocuatro.ducit.preprocessors.NewPreprocessor;
 import com.unounocuatro.ducit.preprocessors.Preprocessor;
 import com.unounocuatro.ducit.processors.DefaultProcessor;
 import com.unounocuatro.ducit.processors.Processor;
@@ -14,6 +14,8 @@ import com.unounocuatro.ducit.processors.Processor;
 public class DefaultEngine implements Engine {
 	
 	private BufferedImage image;
+	
+	private BufferedImage binary;
 	
 	private Preprocessor preprocessor;
 	
@@ -35,7 +37,7 @@ public class DefaultEngine implements Engine {
 		setPreprocessor();
 		setProcessor();
 		setBufferedImage(filePath);
-		//String raw = process();
+		generateBinary();
 		preprocess();
 		String clean = process();
 				
@@ -45,22 +47,26 @@ public class DefaultEngine implements Engine {
 	}
 	
 
+	private void generateBinary() {
+		this.binary = this.preprocessor.toBinary(this.image);
+	}
+
 	private void generatePreview() throws IOException {
 		File outputfile = new File("./src/main/resources/images/preview.jpg");
-		ImageIO.write(this.image, "jpg", outputfile);
+		ImageIO.write(this.binary, "jpg", outputfile);
 		
 	}
 
 	private void preprocess() {
-		this.image = this.preprocessor.doPreprocess(this.image);
+		this.image = this.preprocessor.doPreprocess(this.image, this.binary);
 	}
 	
 	private String process() throws Exception{
-		return this.processor.doProcess(this.image);
+		return this.processor.doProcess(this.binary);
 	}
 
 	private void setPreprocessor() {
-		this.preprocessor = new DefaultPreprocessor();
+		this.preprocessor = new NewPreprocessor();
 		
 	}
 	

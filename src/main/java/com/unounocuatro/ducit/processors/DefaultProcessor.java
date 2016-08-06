@@ -31,8 +31,8 @@ public class DefaultProcessor implements Processor {
 private void setOCRConfig() {
 	instance.setTessVariable("load_system_dawg", properties.getProperty("load_system_dawg"));
 	instance.setTessVariable("load_freq_dawg", properties.getProperty("load_freq_dawg"));
-	instance.setDatapath(properties.getProperty("data_path"));
 	instance.setLanguage(properties.getProperty("language"));
+	instance.setDatapath(properties.getProperty("data_path"));
 	instance.setOcrEngineMode(TessAPI.TessOcrEngineMode.OEM_DEFAULT);
 }
 }
