@@ -8,11 +8,11 @@ import java.util.Properties;
 
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.TessAPI;
-import net.sourceforge.tess4j.Tesseract;
+import net.sourceforge.tess4j.Tesseract1;
 
 public class DefaultProcessor implements Processor {
 	
-	private ITesseract instance = new Tesseract();
+	private ITesseract instance = new Tesseract1();
 	
 	private Properties properties = new Properties();	
 	

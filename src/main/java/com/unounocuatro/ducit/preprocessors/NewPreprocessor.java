@@ -29,7 +29,7 @@ public class NewPreprocessor implements Preprocessor {
 	}
 
 	private boolean isLetter(Color c){
-		if(c.getGreen() + c.getRed() + c.getBlue() < 235)
+		if(c.getGreen() + c.getRed() + c.getBlue() < 200 && c.getBlue()<40)
 			return true;
 		return false;
 	}
@@ -58,8 +58,23 @@ public class NewPreprocessor implements Preprocessor {
 				Color c = new Color(image.getRGB(i, j));
 				if(isYellow(c))
 					image.setRGB(i, j, Color.WHITE.getRGB());
+				else
+					image.setRGB(i, j, Color.BLACK.getRGB());
 			}	
 		}
+		
+		for(int i=1; i<image.getWidth()-1; i++){
+			for(int j=1; j<image.getHeight()-1; j++){
+				Color c1 = new Color(image.getRGB(i, j));
+				Color c2 = new Color(image.getRGB(i-1, j));
+				Color c3 = new Color(image.getRGB(i+1, j));
+				Color c4 = new Color(image.getRGB(i, j-1));
+				Color c5 = new Color(image.getRGB(i, j+1));
+				if(c1.getRGB() == Color.BLACK.getRGB() && c2.getRGB() == Color.BLACK.getRGB() && c3.getRGB() == Color.BLACK.getRGB() && c4.getRGB() == Color.BLACK.getRGB() && c5.getRGB() == Color.BLACK.getRGB())
+					binary.setRGB(i, j, Color.BLACK.getRGB());
+			}	
+		}
+		
 		int count = 0;
 		int first = 0;
 		int last = 0;
@@ -85,12 +100,12 @@ public class NewPreprocessor implements Preprocessor {
 
 
 
-		for(int j=0; j<binary.getWidth(); j++){
+		/*for(int j=0; j<binary.getWidth(); j++){
 			for(int i=0; i<binary.getHeight(); i++){
 				if(i<wfirst || i>wlast)
 					binary.setRGB(j, i, Color.BLACK.getRGB());
 			}	
-		}
+		}*/
 
 
 		/*int limit = Integer.MAX_VALUE;

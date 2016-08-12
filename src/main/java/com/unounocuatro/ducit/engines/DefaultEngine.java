@@ -38,10 +38,11 @@ public class DefaultEngine implements Engine {
 		setProcessor();
 		setBufferedImage(filePath);
 		generateBinary();
-		preprocess();
-		String clean = process();
-				
 		generatePreview();
+		//preprocess();
+		String clean = process().replaceAll("¡", "i");
+				
+		
 		
 		return clean;
 	}
