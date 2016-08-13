@@ -11,7 +11,7 @@ public class App
     {	        
         try {
         	Engine engine = DefaultEngine.getInstance();
-			String result = engine.scan("./src/main/resources/images/elmer.jpg");
+			String result = engine.scan("./src/main/resources/images/violin.jpg");
 			System.out.println(result);
 			//DucitDAO dao = new DucitDaoImpl();
 			//System.out.println(dao.getWordMeaning("perro"));

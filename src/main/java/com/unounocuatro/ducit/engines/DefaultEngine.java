@@ -15,6 +15,8 @@ public class DefaultEngine implements Engine {
 	
 	private BufferedImage image;
 	
+	private BufferedImage raw;
+	
 	private BufferedImage binary;
 	
 	private Preprocessor preprocessor;
@@ -37,16 +39,22 @@ public class DefaultEngine implements Engine {
 		setPreprocessor();
 		setProcessor();
 		setBufferedImage(filePath);
+		generateRaw();
 		generateBinary();
 		generatePreview();
 		//preprocess();
-		String clean = process().replaceAll("¡", "i");
+		String clean = process().replaceAll("¡", "i").replaceAll(" i ", "");
 				
 		
 		
 		return clean;
 	}
 	
+
+	private void generateRaw() {
+		this.raw = this.preprocessor.toRaw(this.image);
+		
+	}
 
 	private void generateBinary() {
 		this.binary = this.preprocessor.toBinary(this.image);

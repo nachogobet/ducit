@@ -23,19 +23,19 @@ public class NewPreprocessor implements Preprocessor {
 	}
 
 	private boolean isYellow(Color c) {
-		if((c.getBlue()>30 && c.getBlue()<120 && c.getGreen()>100 && c.getRed()>80))
+		if(c.getGreen()>130 && c.getRed()>130  && c.getBlue()<80)
 			return true;
 		return false;
 	}
 
 	private boolean isLetter(Color c){
-		if(c.getGreen() + c.getRed() + c.getBlue() < 200 && c.getBlue()<40)
+		if(c.getGreen() + c.getRed() + c.getBlue() < 100 && c.getBlue()<20)
 			return true;
 		return false;
 	}
 
 	private boolean isPaper(Color c){
-		if(c.getGreen()+c.getRed()+c.getBlue() >400 && c.getRed()>140)
+		if(c.getGreen()+c.getRed()+c.getBlue() >300 && c.getRed()>150)
 			return true;
 		return false;
 	}
@@ -133,6 +133,27 @@ public class NewPreprocessor implements Preprocessor {
 		}*/
 
 		return binary;
+	}
+
+	public BufferedImage toRaw(BufferedImage image) {
+		BufferedImage result = DucitUtils.deepCopy(image);
+		for(int i=0; i<result.getWidth(); i++){
+			for(int j=0; j<result.getHeight(); j++){
+				Color c = new Color(result.getRGB(i, j));
+				if(isRawLetter(c))
+					result.setRGB(i, j, Color.BLACK.getRGB());
+				else
+					result.setRGB(i, j, Color.WHITE.getRGB());
+			}	
+		}
+
+		return result;	
+	}
+
+	private boolean isRawLetter(Color c) {
+		if(c.getRed()<60)
+			return true;
+		return false;
 	}
 
 }

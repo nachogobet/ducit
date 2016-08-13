@@ -106,4 +106,9 @@ public class DefaultPreprocessor implements Preprocessor {
 		return null;
 	}
 
+	public BufferedImage toRaw(BufferedImage image) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
