@@ -35,16 +35,14 @@ public class DucitUtils {
 
 	public static BufferedImage cleanLines(BufferedImage image) {
 		boolean line=true;
-		looper:
-		for(int i=0; i<image.getWidth()-10; i++){
-			for(int j=0; j<image.getHeight(); j++){
-				for(int z=i; z<i+9; z++){
+		for(int i=1; i<image.getWidth()-50; i++){
+			for(int j=1; j<image.getHeight(); j++){
+				for(int z=i; z<i+50; z++){
 					if(image.getRGB(z, j) != Color.BLACK.getRGB())
 						line=false;
 				}
 				if(line){
 					doCleanLines(image, i, j);
-					break looper;
 				}
 				line=true;
 			}
@@ -54,17 +52,17 @@ public class DucitUtils {
 
 	private static void doCleanLines(BufferedImage image, int i, int j) {
 		image.setRGB(i, j, Color.WHITE.getRGB());
-		if(image.getRGB(i-1, j-1)==Color.BLACK.getRGB())
+		if(i>0 && j>0 && image.getRGB(i-1, j-1)==Color.BLACK.getRGB())
 			doCleanLines(image, i-1, j-1);
-		if(image.getRGB(i-1, j)==Color.BLACK.getRGB())
+		if(i>0 && image.getRGB(i-1, j)==Color.BLACK.getRGB())
 			doCleanLines(image, i-1, j);
-		if(image.getRGB(i-1, j+1)==Color.BLACK.getRGB())
+		if(i>0 && image.getRGB(i-1, j+1)==Color.BLACK.getRGB())
 			doCleanLines(image, i-1, j+1);
-		if(image.getRGB(i, j-1)==Color.BLACK.getRGB())
+		if(j>0 && image.getRGB(i, j-1)==Color.BLACK.getRGB())
 			doCleanLines(image, i, j-1);
 		if(image.getRGB(i, j+1)==Color.BLACK.getRGB())
 			doCleanLines(image, i, j+1);
-		if(image.getRGB(i+1, j-1)==Color.BLACK.getRGB())
+		if(j>0 && image.getRGB(i+1, j-1)==Color.BLACK.getRGB())
 			doCleanLines(image, i+1, j-1);
 		if(image.getRGB(i+1, j)==Color.BLACK.getRGB())
 			doCleanLines(image, i+1, j);
