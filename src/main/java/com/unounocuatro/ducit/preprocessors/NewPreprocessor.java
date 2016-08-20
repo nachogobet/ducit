@@ -8,7 +8,7 @@ import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
-import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 
 import com.unounocuatro.ducit.utils.DucitUtils;
@@ -167,7 +167,7 @@ public class NewPreprocessor implements Preprocessor {
 	public BufferedImage toClean(String path) {
 		// TODO Auto-generated method stub
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		Mat source = Imgcodecs.imread(path);
+		Mat source = Highgui.imread(path);
 		Mat marcado = new Mat();
 		Mat hsv = new Mat();
 		Mat gauss = new Mat();
@@ -176,11 +176,11 @@ public class NewPreprocessor implements Preprocessor {
 		Scalar narAlto = new Scalar(50,255,255);
 		
 		Imgproc.cvtColor(source, hsv, Imgproc.COLOR_BGR2HSV);
-		Imgcodecs.imwrite("hsv.jpg", hsv);
+		//Highgui.imwrite("./src/main/resources/images/hsv.jpg", hsv);
 
 		
 		Core.inRange(hsv, narBajo, narAlto, marcado);
-		//Imgcodecs.imwrite("marcado.jpg", marcado);
+		//Highgui.imwrite("./src/main/resources/images/hsv.jpg", marcado);
 		
 		
 		//aplico gauss
@@ -191,9 +191,9 @@ public class NewPreprocessor implements Preprocessor {
 		//Aplico adaptative threshold
 		
 		Imgproc.adaptiveThreshold(gauss, adapt, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY, 33, 4);
-		Imgcodecs.imwrite("adapt.jpg",adapt);
+		//Highgui.imwrite("./src/main/resources/images/hsv.jpg",adapt);
 		
-		return DucitUtils.mat2Img(marcado);
+		return DucitUtils.mat2Img(adapt);
 	}
 
 }

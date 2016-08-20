@@ -2,9 +2,11 @@ package com.unounocuatro.ducit.utils;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
+import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
 
 import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
 
 public class DucitUtils {
 	public static BufferedImage deepCopy(BufferedImage bi) {
@@ -16,19 +18,15 @@ public class DucitUtils {
 	
 	public static BufferedImage mat2Img(Mat in)
     {
-        BufferedImage out;
-        byte[] data = new byte[320 * 240 * (int)in.elemSize()];
-        int type;
-        in.get(0, 0, data);
+		//Imgproc.cvtColor(in, in, Imgproc.COLOR_RGB2GRAY, 0);
 
-        if(in.channels() == 1)
-            type = BufferedImage.TYPE_BYTE_GRAY;
-        else
-            type = BufferedImage.TYPE_3BYTE_BGR;
+		// Create an empty image in matching format
+		BufferedImage gray = new BufferedImage(in.width(), in.height(), BufferedImage.TYPE_BYTE_GRAY);
 
-        out = new BufferedImage(320, 240, type);
-
-        out.getRaster().setDataElements(0, 0, 320, 240, data);
-        return out;
+		// Get the BufferedImage's backing array and copy the pixels directly into it
+		byte[] data = ((DataBufferByte) gray.getRaster().getDataBuffer()).getData();
+		in.get(0, 0, data);
+		
+		return gray;
     } 
 }
