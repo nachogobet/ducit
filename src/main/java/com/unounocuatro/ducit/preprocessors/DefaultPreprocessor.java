@@ -2,8 +2,11 @@ package com.unounocuatro.ducit.preprocessors;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.opencv.core.Mat;
 
 public class DefaultPreprocessor implements Preprocessor {
 	
@@ -107,6 +110,11 @@ public class DefaultPreprocessor implements Preprocessor {
 	}
 
 	public BufferedImage toRaw(BufferedImage image) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public BufferedImage toClean(String path) {
 		// TODO Auto-generated method stub
 		return null;
 	}

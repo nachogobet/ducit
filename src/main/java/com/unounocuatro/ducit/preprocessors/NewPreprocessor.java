@@ -2,6 +2,14 @@ package com.unounocuatro.ducit.preprocessors;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.File;
+
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
 
 import com.unounocuatro.ducit.utils.DucitUtils;
 
@@ -154,6 +162,38 @@ public class NewPreprocessor implements Preprocessor {
 		if(c.getRed()<60)
 			return true;
 		return false;
+	}
+
+	public BufferedImage toClean(String path) {
+		// TODO Auto-generated method stub
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		Mat source = Imgcodecs.imread(path);
+		Mat marcado = new Mat();
+		Mat hsv = new Mat();
+		Mat gauss = new Mat();
+		Mat adapt = new Mat();
+		Scalar narBajo = new Scalar(0,85,75);
+		Scalar narAlto = new Scalar(50,255,255);
+		
+		Imgproc.cvtColor(source, hsv, Imgproc.COLOR_BGR2HSV);
+		Imgcodecs.imwrite("hsv.jpg", hsv);
+
+		
+		Core.inRange(hsv, narBajo, narAlto, marcado);
+		//Imgcodecs.imwrite("marcado.jpg", marcado);
+		
+		
+		//aplico gauss
+		
+		Imgproc.GaussianBlur(marcado, gauss, new Size(5,5), 0);
+		//Imgcodecs.imwrite("gauss.jpg", gauss);
+		
+		//Aplico adaptative threshold
+		
+		Imgproc.adaptiveThreshold(gauss, adapt, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY, 33, 4);
+		Imgcodecs.imwrite("adapt.jpg",adapt);
+		
+		return DucitUtils.mat2Img(marcado);
 	}
 
 }
