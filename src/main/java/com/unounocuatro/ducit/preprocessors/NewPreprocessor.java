@@ -173,6 +173,7 @@ public class NewPreprocessor implements Preprocessor {
 		Mat adapt = new Mat();
 		Scalar narBajo = new Scalar(0,85,75);
 		Scalar narAlto = new Scalar(50,255,255);
+
 		
 		Imgproc.cvtColor(source, hsv, Imgproc.COLOR_BGR2HSV);
 		//Highgui.imwrite("./src/main/resources/images/hsv.jpg", hsv);
@@ -184,13 +185,14 @@ public class NewPreprocessor implements Preprocessor {
 		
 		//aplico gauss
 		
-		Imgproc.GaussianBlur(marcado, gauss, new Size(7,7), 0);
-		//Imgcodecs.imwrite("gauss.jpg", gauss);
+		Imgproc.GaussianBlur(marcado, gauss, new Size(9,9), 0);
+		//Imgcodecs.imwrite("./src/main/resources/images/hsv.jpg", gauss);
 		
 		//Aplico adaptative threshold
 		
-		Imgproc.adaptiveThreshold(gauss, adapt, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY, 9, 4);
-		//Highgui.imwrite("./src/main/resources/images/hsv.jpg",adapt);
+		Imgproc.adaptiveThreshold(gauss, adapt, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY, 41,51);
+		
+		//Imgcodecs.imwrite("./src/main/resources/images/hsv.jpg",adapt);
 		
 		return DucitUtils.mat2Img(adapt);
 	}

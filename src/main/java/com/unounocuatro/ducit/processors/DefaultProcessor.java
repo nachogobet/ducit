@@ -33,6 +33,7 @@ private void setOCRConfig() {
 	instance.setTessVariable("load_freq_dawg", properties.getProperty("load_freq_dawg"));
 	instance.setLanguage(properties.getProperty("language"));
 	instance.setDatapath(properties.getProperty("data_path"));
+	instance.setPageSegMode(4);
 	instance.setOcrEngineMode(TessAPI.TessOcrEngineMode.OEM_DEFAULT);
 }
 }

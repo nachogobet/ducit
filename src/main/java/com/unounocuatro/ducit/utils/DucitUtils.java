@@ -5,6 +5,8 @@ import java.awt.image.ColorModel;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
 
+import javax.imageio.ImageIO;
+
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 

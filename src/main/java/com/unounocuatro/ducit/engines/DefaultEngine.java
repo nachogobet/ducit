@@ -53,7 +53,7 @@ public class DefaultEngine implements Engine {
 	
 
 	private void generateClean(String filePath) {
-		this.binary = this.preprocessor.toClean(filePath);
+		this.raw = this.preprocessor.toClean(filePath);
 		
 	}
 
@@ -68,7 +68,7 @@ public class DefaultEngine implements Engine {
 
 	private void generatePreview() throws IOException {
 		File outputfile = new File("./src/main/resources/images/preview.jpg");
-		ImageIO.write(this.binary, "jpg", outputfile);
+		ImageIO.write(this.raw, "jpg", outputfile);
 		
 	}
 
@@ -77,7 +77,7 @@ public class DefaultEngine implements Engine {
 	}
 	
 	private String process() throws Exception{
-		return this.processor.doProcess(this.binary);
+		return this.processor.doProcess(this.raw);
 	}
 
 	private void setPreprocessor() {
