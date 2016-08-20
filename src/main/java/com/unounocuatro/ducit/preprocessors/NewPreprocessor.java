@@ -190,11 +190,11 @@ public class NewPreprocessor implements Preprocessor {
 		
 		//Aplico adaptative threshold
 		
-		Imgproc.adaptiveThreshold(gauss, adapt, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY, 41,51);
+		Imgproc.adaptiveThreshold(gauss, adapt, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY, 41,11);
 		
 		//Imgcodecs.imwrite("./src/main/resources/images/hsv.jpg",adapt);
 		
-		return DucitUtils.mat2Img(adapt);
+		return DucitUtils.cleanLines(DucitUtils.mat2Img(adapt));
 	}
 
 }
