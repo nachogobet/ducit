@@ -17,12 +17,11 @@ public class DefaultPreprocessor implements Preprocessor {
 		for(int i=0; i<image.getWidth(); i++){
 			for(int j=0; j<image.getHeight(); j++){
 				Color c = new Color(image.getRGB(i, j));
-				if(isBlue(c))
-					image.setRGB(i, j, Color.WHITE.getRGB());
+				if(isBlue(c)) image.setRGB(i, j, Color.WHITE.getRGB());
 			}	
 		}
+		
 		int count = 0;
-
 		
 		for(int j=0; j<image.getWidth(); j+=10){
 			for(int i=0; i<image.getHeight(); i++){
@@ -82,21 +81,15 @@ public class DefaultPreprocessor implements Preprocessor {
 	}
 	
 	private boolean isLetter(Color c){
-		if(c.getGreen()+c.getRed()+c.getBlue() < 150)
-			return true;
-		return false;
+		return (c.getGreen()+c.getRed()+c.getBlue() < 150)? true : false;
 	}
 	
 	private boolean isPaper(Color c){
-		if(c.getGreen()+c.getRed()+c.getBlue() >400 && c.getRed()>140)
-			return true;
-		return false;
+		return (c.getGreen()+c.getRed()+c.getBlue() >400 && c.getRed()>140)? true : false;
 	}
 	
 	private boolean isBlue(Color c){
-		if((c.getBlue()>110 && c.getBlue()<200 && c.getRed()<130))
-			return true;
-		return false;
+		return ((c.getBlue()>110 && c.getBlue()<200 && c.getRed()<130))? true : false;
 	}
 	
 	
@@ -105,17 +98,14 @@ public class DefaultPreprocessor implements Preprocessor {
 	}
 
 	public BufferedImage toBinary(BufferedImage image) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public BufferedImage toRaw(BufferedImage image) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public BufferedImage toClean(String path) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

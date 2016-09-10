@@ -30,27 +30,19 @@ public class NewPreprocessor implements Preprocessor {
 	}
 
 	private boolean isYellow(Color c) {
-		if(c.getGreen()>130 && c.getRed()>130  && c.getBlue()<80)
-			return true;
-		return false;
+		return (c.getGreen()>130 && c.getRed()>130  && c.getBlue()<80)? true : false;
 	}
 
 	private boolean isLetter(Color c){
-		if(c.getGreen() + c.getRed() + c.getBlue() < 100 && c.getBlue()<20)
-			return true;
-		return false;
+		return (c.getGreen() + c.getRed() + c.getBlue() < 100 && c.getBlue()<20)? true : false;
 	}
 
 	private boolean isPaper(Color c){
-		if(c.getGreen()+c.getRed()+c.getBlue() >300 && c.getRed()>150)
-			return true;
-		return false;
+		return (c.getGreen()+c.getRed()+c.getBlue() >300 && c.getRed()>150)? true : false;
 	}
 
 	private boolean isBlue(Color c){
-		if((c.getBlue()>110 && c.getBlue()<200 && c.getRed()<130))
-			return true;
-		return false;
+		return ((c.getBlue()>110 && c.getBlue()<200 && c.getRed()<130))? true : false;
 	}
 
 
@@ -158,9 +150,7 @@ public class NewPreprocessor implements Preprocessor {
 	}
 
 	private boolean isRawLetter(Color c) {
-		if(c.getRed()<60)
-			return true;
-		return false;
+		return (c.getRed()<60)? true : false;
 	}
 
 	public BufferedImage toClean(String path) {

@@ -41,9 +41,7 @@ public class DucitDaoImpl implements DucitDAO{
 		String sql;
 		sql = "SELECT meaning FROM word w WHERE w.word LIKE '" + word + "'";
 		ResultSet rs = stmt.executeQuery(sql);
-		if(rs.next())
-			return rs.getString(1);
-		return null;
+		return (rs.next())? rs.getString(1) : null;
 	}
 
 	public String getDefinition(String word) throws Exception {
@@ -53,10 +51,9 @@ public class DucitDaoImpl implements DucitDAO{
 		conn.setRequestMethod("GET");
 		conn.setRequestProperty("Accept", "application/json");
 
-		if (conn.getResponseCode() != 200) {
-			throw new RuntimeException("Failed : HTTP error code : "
+		if (conn.getResponseCode() != 200) throw new RuntimeException("Failed : HTTP error code : "
 					+ conn.getResponseCode());
-		}
+
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(
 				(conn.getInputStream())));
@@ -64,10 +61,8 @@ public class DucitDaoImpl implements DucitDAO{
 		StringBuilder sb = new StringBuilder();
 
 		String line;
-		while ((line = br.readLine()) != null) {
-			sb.append(line);
-		}
-		
+		while ((line = br.readLine()) != null) sb.append(line);
+			
 		JsonElement jelement = new JsonParser().parse(sb.toString());
 		JsonObject  jobject = jelement.getAsJsonObject();
 		sb.setLength(0);
@@ -78,8 +73,6 @@ public class DucitDaoImpl implements DucitDAO{
 			sb.append(locObj.getAsJsonObject().get("snippet").getAsString());
 			i++;
 		}
-		
-		
 
 		return sb.toString();
 	}
@@ -100,9 +93,7 @@ public class DucitDaoImpl implements DucitDAO{
 	        String line = null;         
 	        BufferedReader br = new BufferedReader(new java.io.InputStreamReader(connection.getInputStream())); 
 	        StringBuilder sb = new StringBuilder(); 
-			while ((line = br.readLine()) != null) {
-				sb.append(line);
-			}
+			while ((line = br.readLine()) != null) sb.append(line);
 			
 			JsonElement jelement = new JsonParser().parse(sb.toString());
 			JsonObject  jobject = jelement.getAsJsonObject();

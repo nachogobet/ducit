@@ -29,10 +29,7 @@ public class DefaultEngine implements Engine {
 	}
 	
 	public static Engine getInstance(){
-		if(engine == null)
-			engine = new DefaultEngine();
-		
-		return engine;
+		return (engine==null)? new DefaultEngine() : engine;
 	}
 
 	public String scan(String filePath) throws Exception {
@@ -44,22 +41,16 @@ public class DefaultEngine implements Engine {
 		generateClean(filePath);
 		generatePreview();
 		//preprocess();
-		String clean = process().replaceAll("¡", "i").replaceAll(" i ", "");
-				
-		
-		
-		return clean;
+		return process().replaceAll("¡", "i").replaceAll(" i ", "");
 	}
 	
 
 	private void generateClean(String filePath) {
-		this.raw = this.preprocessor.toClean(filePath);
-		
+		this.raw = this.preprocessor.toClean(filePath);	
 	}
 
 	private void generateRaw() {
-		this.raw = this.preprocessor.toRaw(this.image);
-		
+		this.raw = this.preprocessor.toRaw(this.image);		
 	}
 
 	private void generateBinary() {
@@ -68,8 +59,7 @@ public class DefaultEngine implements Engine {
 
 	private void generatePreview() throws IOException {
 		File outputfile = new File("./src/main/resources/images/preview.jpg");
-		ImageIO.write(this.raw, "jpg", outputfile);
-		
+		ImageIO.write(this.raw, "jpg", outputfile);	
 	}
 
 	private void preprocess() {
