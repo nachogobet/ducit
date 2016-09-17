@@ -7,7 +7,7 @@ import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
-import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 
 import com.unounocuatro.ducit.utils.DucitUtils;
@@ -153,10 +153,10 @@ public class NewPreprocessor implements Preprocessor {
 		return (c.getRed()<60)? true : false;
 	}
 
-	public BufferedImage toClean(String path) {
+	public BufferedImage toClean2(String path) {
 		// TODO Auto-generated method stub
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		Mat source = Imgcodecs.imread(path);
+		Mat source = Highgui.imread(path);
 		Mat marcado = new Mat();
 		Mat hsv = new Mat();
 		Mat gauss = new Mat();
@@ -176,15 +176,108 @@ public class NewPreprocessor implements Preprocessor {
 		//aplico gauss
 		
 		Imgproc.GaussianBlur(marcado, gauss, new Size(9,9), 0);
-		//Imgcodecs.imwrite("./src/main/resources/images/hsv.jpg", gauss);
+		//Highgui.imwrite("./src/main/resources/images/hsv.jpg", gauss);
 		
 		//Aplico adaptative threshold
 		
 		Imgproc.adaptiveThreshold(gauss, adapt, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY, 41,11);
 		
-		//Imgcodecs.imwrite("./src/main/resources/images/hsv.jpg",adapt);
+		//Highgui.imwrite("./src/main/resources/images/hsv.jpg",adapt);
 		
 		return DucitUtils.cleanLines(DucitUtils.mat2Img(adapt));
+	}
+	
+	public BufferedImage toClean(String path){
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		Mat source = Highgui.imread(path);
+		Mat marcado = new Mat();
+		Mat hsv = new Mat();
+		Mat gauss = new Mat();
+		Mat adapt = new Mat();	
+		Mat inv = new Mat();
+		Mat fin = new Mat();
+		
+		
+		
+		try
+		{
+			
+			Scalar res_low = null;
+			Scalar res_high = null;
+			Scalar img_low = null;
+			Scalar img_high = null;
+			Scalar sin_low = null;
+			Scalar sin_high = null;
+			
+			//leemos el archivo de configuraciÛn
+			
+			//setConfig(res_low,res_high,img_low,img_high,sin_low,sin_high);
+			
+					
+			
+			
+			//VALOR FINAL RESALTADOR NARANJA
+			Scalar narBajo = new Scalar(5,75,115);
+			Scalar narAlto = new Scalar(25,255,255);
+			
+			
+			//VALOR FINAL RESALTADOR AMARILLO
+			Scalar amarBajo = new Scalar(26,85,75);
+			Scalar amarAlto = new Scalar(50,255,255);
+			
+			//VALOR FINAL RESALTADOR VERDE
+			Scalar verBajo = new Scalar(35,50,50);
+			Scalar verAlto = new Scalar(107,255,255);
+			
+			//VALOR FINAL RESALTADOR AZUL
+			Scalar azulBajo = new Scalar(55,60,65);
+			Scalar azulAlto = new Scalar(110,255,255);
+			
+			//VALOR FINAL RESALTADOR VIOLETA
+			
+			Scalar violBajo = new Scalar(100,20,90);
+			Scalar violAlto = new Scalar(155,255,255);
+			
+			//VALOR FINAL RESALTADOR ROSA
+			Scalar rosaBajo = new Scalar(155,75,140);
+			Scalar rosaAlto = new Scalar(255,255,255);
+			
+			Imgproc.cvtColor(source, hsv, Imgproc.COLOR_BGR2HSV);
+			Highgui.imwrite("hsv.jpg", hsv);
+
+			
+			Core.inRange(hsv,narBajo, narAlto, marcado);
+			Highgui.imwrite("marcado.jpg", marcado);
+			
+			
+			//aplico gauss
+			
+			Imgproc.GaussianBlur(marcado, gauss, new Size(5,5), 0);
+			//Highgui.imwrite("gauss.jpg", gauss);
+			
+			//Aplico adaptative threshold
+			
+			Imgproc.adaptiveThreshold(marcado, adapt, 255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY,15, 4);
+			Highgui.imwrite("adapt.jpg",adapt);
+			
+			Imgproc.adaptiveThreshold(marcado, inv, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY_INV, 25, 130);
+			Highgui.imwrite("invertido.jpg",inv);
+			
+			Imgproc.adaptiveThreshold(inv, fin, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY_INV, 15, -1);
+			Highgui.imwrite("fin.jpg",fin);
+			
+			
+			
+			
+			return DucitUtils.mat2Img(fin);
+		}
+		catch (Exception e)
+		{
+			System.out.println(e.getMessage());
+			return null;
+			
+		}
+		
 	}
 
 }
