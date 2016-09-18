@@ -7,7 +7,7 @@ import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
-import org.opencv.highgui.Highgui;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import com.unounocuatro.ducit.utils.DucitUtils;
@@ -156,7 +156,7 @@ public class NewPreprocessor implements Preprocessor {
 	public BufferedImage toClean2(String path) {
 		// TODO Auto-generated method stub
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		Mat source = Highgui.imread(path);
+		Mat source = Imgcodecs.imread(path);
 		Mat marcado = new Mat();
 		Mat hsv = new Mat();
 		Mat gauss = new Mat();
@@ -166,30 +166,30 @@ public class NewPreprocessor implements Preprocessor {
 
 		
 		Imgproc.cvtColor(source, hsv, Imgproc.COLOR_BGR2HSV);
-		//Highgui.imwrite("./src/main/resources/images/hsv.jpg", hsv);
+		//Imgproc.imwrite("./src/main/resources/images/hsv.jpg", hsv);
 
 		
 		Core.inRange(hsv, narBajo, narAlto, marcado);
-		//Highgui.imwrite("./src/main/resources/images/hsv.jpg", marcado);
+		//Imgproc.imwrite("./src/main/resources/images/hsv.jpg", marcado);
 		
 		
 		//aplico gauss
 		
 		Imgproc.GaussianBlur(marcado, gauss, new Size(9,9), 0);
-		//Highgui.imwrite("./src/main/resources/images/hsv.jpg", gauss);
+		//Imgproc.imwrite("./src/main/resources/images/hsv.jpg", gauss);
 		
 		//Aplico adaptative threshold
 		
 		Imgproc.adaptiveThreshold(gauss, adapt, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY, 41,11);
 		
-		//Highgui.imwrite("./src/main/resources/images/hsv.jpg",adapt);
+		//Imgproc.imwrite("./src/main/resources/images/hsv.jpg",adapt);
 		
 		return DucitUtils.cleanLines(DucitUtils.mat2Img(adapt));
 	}
 	
 	public BufferedImage toClean(String path){
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		Mat source = Highgui.imread(path);
+		Mat source = Imgcodecs.imread(path);
 		Mat marcado = new Mat();
 		Mat hsv = new Mat();
 		Mat gauss = new Mat();
@@ -243,28 +243,28 @@ public class NewPreprocessor implements Preprocessor {
 			Scalar rosaAlto = new Scalar(255,255,255);
 			
 			Imgproc.cvtColor(source, hsv, Imgproc.COLOR_BGR2HSV);
-			Highgui.imwrite("hsv.jpg", hsv);
+			Imgcodecs.imwrite("hsv.jpg", hsv);
 
 			
 			Core.inRange(hsv,narBajo, narAlto, marcado);
-			Highgui.imwrite("marcado.jpg", marcado);
+			Imgcodecs.imwrite("marcado.jpg", marcado);
 			
 			
 			//aplico gauss
 			
 			Imgproc.GaussianBlur(marcado, gauss, new Size(5,5), 0);
-			//Highgui.imwrite("gauss.jpg", gauss);
+			//Imgproc.imwrite("gauss.jpg", gauss);
 			
 			//Aplico adaptative threshold
 			
 			Imgproc.adaptiveThreshold(marcado, adapt, 255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY,15, 4);
-			Highgui.imwrite("adapt.jpg",adapt);
+			Imgcodecs.imwrite("adapt.jpg",adapt);
 			
 			Imgproc.adaptiveThreshold(marcado, inv, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY_INV, 25, 130);
-			Highgui.imwrite("invertido.jpg",inv);
+			Imgcodecs.imwrite("invertido.jpg",inv);
 			
 			Imgproc.adaptiveThreshold(inv, fin, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY_INV, 15, -1);
-			Highgui.imwrite("fin.jpg",fin);
+			Imgcodecs.imwrite("fin.jpg",fin);
 			
 			
 			
