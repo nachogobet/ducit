@@ -202,74 +202,48 @@ public class NewPreprocessor implements Preprocessor {
 		try
 		{
 			
-			Scalar res_low = null;
-			Scalar res_high = null;
-			Scalar img_low = null;
-			Scalar img_high = null;
-			Scalar sin_low = null;
-			Scalar sin_high = null;
-			
-			//leemos el archivo de configuraciÛn
-			
-			//setConfig(res_low,res_high,img_low,img_high,sin_low,sin_high);
-			
-					
-			
-			
-			//VALOR FINAL RESALTADOR NARANJA
-			Scalar narBajo = new Scalar(5,75,115);
-			Scalar narAlto = new Scalar(25,255,255);
-			
-			
-			//VALOR FINAL RESALTADOR AMARILLO
-			Scalar amarBajo = new Scalar(26,85,75);
-			Scalar amarAlto = new Scalar(50,255,255);
-			
-			//VALOR FINAL RESALTADOR VERDE
-			Scalar verBajo = new Scalar(35,50,50);
-			Scalar verAlto = new Scalar(107,255,255);
-			
-			//VALOR FINAL RESALTADOR AZUL
-			Scalar azulBajo = new Scalar(55,60,65);
-			Scalar azulAlto = new Scalar(110,255,255);
-			
-			//VALOR FINAL RESALTADOR VIOLETA
-			
-			Scalar violBajo = new Scalar(100,20,90);
-			Scalar violAlto = new Scalar(155,255,255);
-			
-			//VALOR FINAL RESALTADOR ROSA
-			Scalar rosaBajo = new Scalar(155,75,140);
-			Scalar rosaAlto = new Scalar(255,255,255);
-			
-			Imgproc.cvtColor(source, hsv, Imgproc.COLOR_BGR2HSV);
-			Imgcodecs.imwrite("hsv.jpg", hsv);
 
+			//VALOR FINAL RESALTADOR NARANJA
+						Scalar narBajo = new Scalar(5,75,130);//(5,75,115)
+						Scalar narAlto = new Scalar(25,255,255);
+						
+						
+						//VALOR FINAL RESALTADOR AMARILLO
+						Scalar amarBajo = new Scalar(26,85,75);
+						Scalar amarAlto = new Scalar(50,255,255);
+						
+						//VALOR FINAL RESALTADOR VERDE
+						Scalar verBajo = new Scalar(35,50,50);
+						Scalar verAlto = new Scalar(107,255,255);
+						
+						//VALOR FINAL RESALTADOR AZUL
+						Scalar azulBajo = new Scalar(55,60,65);
+						Scalar azulAlto = new Scalar(110,255,255);
+						
+						//VALOR FINAL RESALTADOR VIOLETA
+						
+						Scalar violBajo = new Scalar(100,20,90);//(100,20,70)
+						Scalar violAlto = new Scalar(155,255,255);
+						
+						//VALOR FINAL RESALTADOR ROSA
+						Scalar rosaBajo = new Scalar(155,75,140);
+						Scalar rosaAlto = new Scalar(255,255,255);
+						
+						Imgproc.cvtColor(source, hsv, Imgproc.COLOR_BGR2HSV);
+						Imgcodecs.imwrite("hsv.jpg", hsv);
+
+						
+						Core.inRange(hsv,narBajo, narAlto, marcado);
+						Imgcodecs.imwrite("marcado.jpg", marcado);
+						
+						
+						//aplico gauss
+						
+						Imgproc.GaussianBlur(marcado, gauss, new Size(3,3), 0);
+						Imgcodecs.imwrite("gauss.jpg", gauss);
+		
 			
-			Core.inRange(hsv,narBajo, narAlto, marcado);
-			Imgcodecs.imwrite("marcado.jpg", marcado);
-			
-			
-			//aplico gauss
-			
-			Imgproc.GaussianBlur(marcado, gauss, new Size(5,5), 0);
-			//Imgproc.imwrite("gauss.jpg", gauss);
-			
-			//Aplico adaptative threshold
-			
-			Imgproc.adaptiveThreshold(marcado, adapt, 255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY,15, 4);
-			Imgcodecs.imwrite("adapt.jpg",adapt);
-			
-			Imgproc.adaptiveThreshold(marcado, inv, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY_INV, 25, 130);
-			Imgcodecs.imwrite("invertido.jpg",inv);
-			
-			Imgproc.adaptiveThreshold(inv, fin, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY_INV, 15, -1);
-			Imgcodecs.imwrite("fin.jpg",fin);
-			
-			
-			
-			
-			return DucitUtils.mat2Img(fin);
+			return DucitUtils.mat2Img(gauss);
 		}
 		catch (Exception e)
 		{
