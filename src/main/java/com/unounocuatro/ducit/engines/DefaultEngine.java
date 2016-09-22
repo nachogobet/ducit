@@ -39,7 +39,7 @@ public class DefaultEngine implements Engine {
 		//generateRaw();
 		//generateBinary();
 		generateClean(filePath);
-		//generatePreview();
+		generatePreview();
 		//preprocess();
 		return process().replaceAll("¡", "i").replaceAll(" i ", "");
 	}

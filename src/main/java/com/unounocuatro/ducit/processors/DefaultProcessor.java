@@ -42,5 +42,6 @@ private void setOCRConfig() {
 //	instance.setDatapath(properties.getProperty("data_path"));
 	//instance.setPageSegMode(4);
 	instance.setOcrEngineMode(TessAPI.TessOcrEngineMode.OEM_DEFAULT);
+	instance.setPageSegMode(TessAPI.TessPageSegMode.PSM_AUTO);
 }
 }

@@ -230,20 +230,19 @@ public class NewPreprocessor implements Preprocessor {
 						Scalar rosaAlto = new Scalar(255,255,255);
 						
 						Imgproc.cvtColor(source, hsv, Imgproc.COLOR_BGR2HSV);
-						Imgcodecs.imwrite("hsv.jpg", hsv);
 
 						
 						Core.inRange(hsv,narBajo, narAlto, marcado);
-						Imgcodecs.imwrite("marcado.jpg", marcado);
 						
 						
 						//aplico gauss
 						
 						Imgproc.GaussianBlur(marcado, gauss, new Size(3,3), 0);
-						Imgcodecs.imwrite("gauss.jpg", gauss);
+						
+						Imgproc.adaptiveThreshold(gauss, adapt, 255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY,15, 4);
 		
 			
-			return DucitUtils.mat2Img(gauss);
+			return DucitUtils.cleanLines(DucitUtils.mat2Img(adapt));
 		}
 		catch (Exception e)
 		{
