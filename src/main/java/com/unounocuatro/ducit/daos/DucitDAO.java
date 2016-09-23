@@ -7,5 +7,5 @@ public interface DucitDAO {
 	
 	String getDefinition(String word) throws Exception;
 	
-	String getSynonyms(String word);
+	String getSynonyms(String word) throws SQLException;
 }

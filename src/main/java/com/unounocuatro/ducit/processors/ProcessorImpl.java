@@ -9,7 +9,7 @@ import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.TessAPI;
 import net.sourceforge.tess4j.Tesseract1;
 
-public class DefaultProcessor implements Processor {
+public class ProcessorImpl implements Processor {
 	
 	private ITesseract instance = new Tesseract1();
 	

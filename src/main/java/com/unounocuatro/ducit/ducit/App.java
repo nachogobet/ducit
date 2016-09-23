@@ -2,7 +2,7 @@ package com.unounocuatro.ducit.ducit;
 
 import java.io.IOException;
 
-import com.unounocuatro.ducit.engines.DefaultEngine;
+import com.unounocuatro.ducit.engines.EngineImpl;
 import com.unounocuatro.ducit.engines.Engine;
 
 public class App 
@@ -10,7 +10,7 @@ public class App
     public static void main( String[] args ) throws Exception
     {	        
         try {
-        	Engine engine = DefaultEngine.getInstance();
+        	Engine engine = EngineImpl.getInstance();
 			String result = engine.scan(args[0]);
 			System.out.println(result);
 			//DucitDAO dao = new DucitDaoImpl();

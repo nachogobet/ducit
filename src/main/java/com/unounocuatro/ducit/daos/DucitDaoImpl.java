@@ -41,6 +41,7 @@ public class DucitDaoImpl implements DucitDAO{
 		String sql;
 		sql = "SELECT meaning FROM word w WHERE w.word LIKE '" + word + "'";
 		ResultSet rs = stmt.executeQuery(sql);
+		conn.close();
 		return (rs.next())? rs.getString(1) : null;
 	}
 
@@ -77,40 +78,16 @@ public class DucitDaoImpl implements DucitDAO{
 		return sb.toString();
 	}
 
-	public String getSynonyms(String word) {
-		return sendRequest(word, "es_ES", "IODQDjJR3cktaXyNWmtK", "json"); 
+	public String getSynonyms(String word) throws SQLException {
+		Connection conn = null;
+		Statement stmt = null;
+		conn = DriverManager.getConnection(DB_URL,USER,PASS);
+		stmt = conn.createStatement();
+		String sql;
+		sql = "SELECT synonym FROM word w WHERE w.word LIKE '" + word + "'";
+		ResultSet rs = stmt.executeQuery(sql);
+		conn.close();
+		return (rs.next())? rs.getString(1) : null;
 	}
 
-	final String endpoint = "http://thesaurus.altervista.org/thesaurus/v1"; 
-
-	  private String sendRequest(String word, String language, String key, String output) { 
-	    try { 
-	      URL serverAddress = new URL(endpoint + "?word="+URLEncoder.encode(word, "UTF-8")+"&language="+language+"&key="+key+"&output="+output); 
-	      HttpURLConnection connection = (HttpURLConnection)serverAddress.openConnection(); 
-	      connection.connect(); 
-	      int rc = connection.getResponseCode(); 
-	      if (rc == 200) { 
-	        String line = null;         
-	        BufferedReader br = new BufferedReader(new java.io.InputStreamReader(connection.getInputStream())); 
-	        StringBuilder sb = new StringBuilder(); 
-			while ((line = br.readLine()) != null) sb.append(line);
-			
-			JsonElement jelement = new JsonParser().parse(sb.toString());
-			JsonObject  jobject = jelement.getAsJsonObject();
-			sb.setLength(0);
-			int size = jobject.getAsJsonArray("response").size();
-			int i=0;
-			while(i < size){
-				JsonElement locObj = jobject.getAsJsonArray("response").get(i);
-				sb.append(locObj.getAsJsonObject().get("list").getAsJsonObject().get("synonyms"));
-				i++;
-			}
-			return sb.toString();
-	      } else System.out.println("HTTP error:"+rc); 
-	      connection.disconnect(); 
-	    } catch (Exception e) { 
-	      e.printStackTrace(); 
-	    }
-		return null; 
-	  } 
 }

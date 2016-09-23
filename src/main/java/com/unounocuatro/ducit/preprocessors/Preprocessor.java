@@ -5,12 +5,8 @@ import java.io.File;
 
 import org.opencv.core.Mat;
 
+import com.unounocuatro.ducit.scalars.ColorScalar;
+
 public interface Preprocessor {
-	BufferedImage doPreprocess(BufferedImage image, BufferedImage binary);
-
-	BufferedImage toBinary(BufferedImage image);
-
-	BufferedImage toRaw(BufferedImage image);
-	
-	BufferedImage toClean(String path);
+	BufferedImage doPreprocess(String path, ColorScalar scalar);
 }

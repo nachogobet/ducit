@@ -60,13 +60,13 @@ public class DucitUtils {
 			doCleanLines(image, i-1, j+1);
 		if(j>0 && image.getRGB(i, j-1)==Color.BLACK.getRGB())
 			doCleanLines(image, i, j-1);
-		if(image.getRGB(i, j+1)==Color.BLACK.getRGB())
+		if(j<image.getWidth()-1 && image.getRGB(i, j+1)==Color.BLACK.getRGB())
 			doCleanLines(image, i, j+1);
-		if(j>0 && image.getRGB(i+1, j-1)==Color.BLACK.getRGB())
+		if(j>0 && i<image.getWidth()-1 && image.getRGB(i+1, j-1)==Color.BLACK.getRGB())
 			doCleanLines(image, i+1, j-1);
-		if(image.getRGB(i+1, j)==Color.BLACK.getRGB())
+		if(i<image.getWidth()-1 && image.getRGB(i+1, j)==Color.BLACK.getRGB())
 			doCleanLines(image, i+1, j);
-		if(image.getRGB(i+1, j+1)==Color.BLACK.getRGB())
+		if(i<image.getWidth()-1 && j<image.getHeight()-1 && image.getRGB(i+1, j+1)==Color.BLACK.getRGB())
 			doCleanLines(image, i+1, j+1);
 	}
 }
