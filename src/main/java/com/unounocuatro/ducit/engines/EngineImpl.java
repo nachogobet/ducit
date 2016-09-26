@@ -72,11 +72,20 @@ public class EngineImpl implements Engine {
 	}
 
 	private void process() throws SQLException, Exception{
-		//System.out.println(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[0])));
+		System.out.println(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[0])));
 		//printSynonyms(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[1])));
-		printAntonyms(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[2])));
-		//System.out.println(dao.getWordMeaning(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[3]))));
-		//System.out.println(dao.getDefinition(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[4]))));
+		//printAntonyms(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[2])));
+		//printWordMeanings(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[3])));
+		//printDefinitions(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[4])));
+	}
+
+	private void printDefinitions(String result) throws Exception {
+		System.out.println(this.dao.getDefinition(result));	
+	}
+
+	private void printWordMeanings(String result) throws SQLException {
+		String[] array = DucitUtils.getStringArray(result);
+		for(int i=0; i< array.length; i++) System.out.println(this.dao.getWordMeaning(array[i]));
 	}
 
 	private void printSynonyms(String result) throws SQLException {
