@@ -69,4 +69,11 @@ public class DucitUtils {
 		if(i<image.getWidth()-1 && j<image.getHeight()-1 && image.getRGB(i+1, j+1)==Color.BLACK.getRGB())
 			doCleanLines(image, i+1, j+1);
 	}
+
+	public static String[] getStringArray(String result) {
+		String[] words = result.split("\\s+");
+		for (int i = 0; i < words.length; i++) words[i] = words[i].replaceAll("[^\\w]", "");
+		
+		return words;
+	}
 }

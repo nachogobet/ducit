@@ -11,12 +11,7 @@ public class App
     {	        
         try {
         	Engine engine = EngineImpl.getInstance();
-			String result = engine.scan(args[0]);
-			System.out.println(result);
-			//DucitDAO dao = new DucitDaoImpl();
-			//System.out.println(dao.getWordMeaning("perro"));
-			//System.out.println(dao.getDefinition("peninsula de valdes"));
-			//System.out.println(dao.getSynonyms("paz"));
+			engine.scan(args[0]);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
