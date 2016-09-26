@@ -99,7 +99,7 @@ public  class PreprocessorImpl implements Preprocessor {
 
 
 	//procesamiento de la iamgen aplicando filtros y colores
-	static Mat ProcesarImag(Mat Img, ColorScalar s)
+	private Mat ProcesarImag(Mat Img, ColorScalar s)
 	{
 		Mat imgAux = new Mat();
 		Mat imgMask = new Mat();
@@ -135,7 +135,7 @@ public  class PreprocessorImpl implements Preprocessor {
 	}
 
 	//procesamiento de la imagen ya filtrada para la búsqueda de contorno
-	static Mat BuscarContorno(Mat Img, List<MatOfPoint> c, Mat j)
+	private Mat BuscarContorno(Mat Img, List<MatOfPoint> c, Mat j)
 	{	
 		Mat ca = new Mat(Img.height(),Img.width(),1);
 		Imgproc.Canny(Img, ca, 1,2);
@@ -146,7 +146,7 @@ public  class PreprocessorImpl implements Preprocessor {
 		return ca;
 	}
 
-	static void DibujarContorno(Mat d, List<MatOfPoint> c, MatOfPoint2f cap, double dis, Mat jer, Mat ifuente, Mat ifin, List<Mat> ilist)
+	private void DibujarContorno(Mat d, List<MatOfPoint> c, MatOfPoint2f cap, double dis, Mat jer, Mat ifuente, Mat ifin, List<Mat> ilist)
 	{
 		double[] area = new double[c.size()];
 			
@@ -213,7 +213,7 @@ public  class PreprocessorImpl implements Preprocessor {
 		
 	}
 	//función que verifica multiples contornos para una misma imagen-->solo guarda un contorno por imagen
-	static List<Mat> ValidaImag(List<Mat> M)
+	private List<Mat> ValidaImag(List<Mat> M)
 	{
 		List<Mat> aux = new ArrayList<Mat>();
 		int act;
@@ -240,7 +240,7 @@ public  class PreprocessorImpl implements Preprocessor {
 
 	//función que genera los output de las imagenes procesadas
 
-	static void GeneraImag(List<Mat> M)
+	private void GeneraImag(List<Mat> M)
 	{
 		for(int i=0;i<M.size();i++)
 			{
