@@ -72,30 +72,39 @@ public class EngineImpl implements Engine {
 	}
 
 	private void process() throws SQLException, Exception{
-		System.out.println(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[0])));
-		//printSynonyms(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[1])));
-		//printAntonyms(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[2])));
-		//printWordMeanings(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[3])));
-		//printDefinitions(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[4])));
+		printWithProtocol("plano", this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[0])), 1);
+		printSynonyms(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[1])));
+		printAntonyms(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[2])));
+		printWordMeanings(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[3])));
+		printDefinitions(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[4])));
 	}
 
 	private void printDefinitions(String result) throws Exception {
-		System.out.println(this.dao.getDefinition(result));	
+		printWithProtocol(result, this.dao.getDefinition(result), 5);
+	}
+	
+	private void printWithProtocol(String expression, String result, int functionality){
+		if(!expression.isEmpty() && expression != null){
+			if(result != null && !result.equals("null"))
+				System.out.println(System.currentTimeMillis()+ "|" + functionality + "|" + expression + "|" + result + "##");
+			else
+				System.out.println(System.currentTimeMillis()+ "|" + functionality + "|" + expression + "|" + "expresión sin resultados" + "##");
+		}
 	}
 
 	private void printWordMeanings(String result) throws SQLException {
 		String[] array = DucitUtils.getStringArray(result);
-		for(int i=0; i< array.length; i++) System.out.println(this.dao.getWordMeaning(array[i]));
+		for(int i=0; i< array.length; i++) printWithProtocol(array[i], this.dao.getWordMeaning(array[i]), 4);
 	}
 
 	private void printSynonyms(String result) throws SQLException {
 		String[] array = DucitUtils.getStringArray(result);
-		for(int i=0; i< array.length; i++) System.out.println(this.dao.getSynonyms(array[i]));
+		for(int i=0; i< array.length; i++) printWithProtocol(array[i], this.dao.getSynonyms(array[i]), 2);
 	}
 	
 	private void printAntonyms(String result) throws SQLException {
 		String[] array = DucitUtils.getStringArray(result);
-		for(int i=0; i< array.length; i++) System.out.println(this.dao.getAntonyms(array[i]));
+		for(int i=0; i< array.length; i++) printWithProtocol(array[i], this.dao.getAntonyms(array[i]), 3);
 	}
 
 	private void setPreprocessor() {
