@@ -3,27 +3,16 @@ package com.unounocuatro.ducit.daos;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.scribe.builder.ServiceBuilder;
-import org.scribe.model.OAuthConstants;
-import org.scribe.model.OAuthRequest;
-import org.scribe.model.Response;
-import org.scribe.model.Token;
-import org.scribe.model.Verb;
-import org.scribe.oauth.OAuthService;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.unounocuatro.ducit.apis.ApiCulturApi;
 
 public class DucitDaoImpl implements DucitDAO{
 
@@ -41,7 +30,6 @@ public class DucitDaoImpl implements DucitDAO{
 		String sql;
 		sql = "SELECT meaning FROM word w WHERE w.word LIKE '" + word + "'";
 		ResultSet rs = stmt.executeQuery(sql);
-		conn.close();
 		return (rs.next())? rs.getString(1) : null;
 	}
 
@@ -86,7 +74,17 @@ public class DucitDaoImpl implements DucitDAO{
 		String sql;
 		sql = "SELECT synonym FROM word w WHERE w.word LIKE '" + word + "'";
 		ResultSet rs = stmt.executeQuery(sql);
-		conn.close();
+		return (rs.next())? rs.getString(1) : null;
+	}
+	
+	public String getAntonyms(String word) throws SQLException {
+		Connection conn = null;
+		Statement stmt = null;
+		conn = DriverManager.getConnection(DB_URL,USER,PASS);
+		stmt = conn.createStatement();
+		String sql;
+		sql = "SELECT antonym FROM word w WHERE w.word LIKE '" + word + "'";
+		ResultSet rs = stmt.executeQuery(sql);
 		return (rs.next())? rs.getString(1) : null;
 	}
 

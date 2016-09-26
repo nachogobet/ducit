@@ -6,25 +6,20 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import com.unounocuatro.ducit.preprocessors.PreprocessorImpl;
 import com.unounocuatro.ducit.preprocessors.Preprocessor;
+import com.unounocuatro.ducit.preprocessors.PreprocessorImpl;
+import com.unounocuatro.ducit.processors.Processor;
 import com.unounocuatro.ducit.processors.ProcessorImpl;
 import com.unounocuatro.ducit.scalars.ColorScalar;
-import com.unounocuatro.ducit.processors.Processor;
 
 public class EngineImpl implements Engine {
 	
 	private BufferedImage image;
 	
-	private BufferedImage raw;
-	
-	private BufferedImage binary;
-	
 	private Preprocessor preprocessor;
 	
 	private Processor processor;
 	
-	private String result;
 	
 	private String filePath;
 	

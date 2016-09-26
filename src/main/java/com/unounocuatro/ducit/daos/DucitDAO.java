@@ -8,4 +8,6 @@ public interface DucitDAO {
 	String getDefinition(String word) throws Exception;
 	
 	String getSynonyms(String word) throws SQLException;
+	
+	String getAntonyms(String word) throws SQLException;
 }
