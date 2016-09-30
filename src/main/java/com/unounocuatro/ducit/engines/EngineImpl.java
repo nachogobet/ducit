@@ -75,7 +75,7 @@ public class EngineImpl implements Engine {
 	private void process() throws SQLException, Exception{
 		printWithProtocol("plano", this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[0])), 1);
 		printSynonymsAntonyms(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[1])));
-		this.preprocessor.doPreprocessIMG(this.filePath, this.actions[2]);
+		//this.preprocessor.doPreprocessIMG(this.filePath, this.actions[2]);
 		printWordMeanings(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[3])));
 		printDefinitions(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[4])));
 	}

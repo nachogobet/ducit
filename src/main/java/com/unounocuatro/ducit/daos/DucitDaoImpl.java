@@ -28,7 +28,7 @@ public class DucitDaoImpl implements DucitDAO{
 		conn = DriverManager.getConnection(DB_URL,USER,PASS);
 		stmt = conn.createStatement();
 		String sql;
-		sql = "SELECT meaning FROM word w WHERE w.word LIKE '" + word + "'";
+		sql = "SELECT meaning FROM word w WHERE w.word LIKE '" + word + "' OR w.word LIKE '" + word.substring(0,word.length()-1) + "'";
 		ResultSet rs = stmt.executeQuery(sql);
 		return (rs.next())? rs.getString(1) : null;
 	}
