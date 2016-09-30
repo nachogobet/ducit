@@ -56,6 +56,7 @@ public class EngineImpl implements Engine {
 
 
 	private void setActions() throws FileNotFoundException {
+		@SuppressWarnings("resource")
 		Scanner in = new Scanner(new FileReader("./src/main/resources/config.txt"));
 		int index;
 		int color;
@@ -73,8 +74,8 @@ public class EngineImpl implements Engine {
 
 	private void process() throws SQLException, Exception{
 		printWithProtocol("plano", this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[0])), 1);
-		printSynonyms(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[1])));
-		printAntonyms(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[2])));
+		printSynonymsAntonyms(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[1])));
+		this.preprocessor.doPreprocessIMG(this.filePath, this.actions[2]);
 		printWordMeanings(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[3])));
 		printDefinitions(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[4])));
 	}
@@ -97,14 +98,12 @@ public class EngineImpl implements Engine {
 		for(int i=0; i< array.length; i++) printWithProtocol(array[i], this.dao.getWordMeaning(array[i]), 4);
 	}
 
-	private void printSynonyms(String result) throws SQLException {
+	private void printSynonymsAntonyms(String result) throws SQLException {
 		String[] array = DucitUtils.getStringArray(result);
-		for(int i=0; i< array.length; i++) printWithProtocol(array[i], this.dao.getSynonyms(array[i]), 2);
-	}
-	
-	private void printAntonyms(String result) throws SQLException {
-		String[] array = DucitUtils.getStringArray(result);
-		for(int i=0; i< array.length; i++) printWithProtocol(array[i], this.dao.getAntonyms(array[i]), 3);
+		for(int i=0; i< array.length; i++){
+			printWithProtocol(array[i], this.dao.getSynonyms(array[i]), 2);
+			printWithProtocol(array[i], this.dao.getAntonyms(array[i]), 2);
+		}
 	}
 
 	private void setPreprocessor() {

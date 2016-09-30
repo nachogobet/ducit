@@ -74,7 +74,7 @@ public class DucitDaoImpl implements DucitDAO{
 		String sql;
 		sql = "SELECT synonym FROM word w WHERE w.word LIKE '" + word + "'";
 		ResultSet rs = stmt.executeQuery(sql);
-		return (rs.next())? rs.getString(1) : null;
+		return (rs.next())? rs.getString(1) + "(S)" : null;
 	}
 	
 	public String getAntonyms(String word) throws SQLException {
@@ -85,7 +85,7 @@ public class DucitDaoImpl implements DucitDAO{
 		String sql;
 		sql = "SELECT antonym FROM word w WHERE w.word LIKE '" + word + "'";
 		ResultSet rs = stmt.executeQuery(sql);
-		return (rs.next())? rs.getString(1) : null;
+		return (rs.next())? rs.getString(1) + "(A)" : null;
 	}
 
 }

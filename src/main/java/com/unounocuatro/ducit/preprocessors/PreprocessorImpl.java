@@ -126,7 +126,7 @@ public  class PreprocessorImpl implements Preprocessor {
 
 		
 		//difuminar imagen para suavizar contornos
-		Mat kernel2 = imgMask.ones(5, 5, CvType.CV_8U);
+		Mat kernel2 = Mat.ones(5, 5, CvType.CV_8U);
 		Imgproc.dilate(imgMask,imgMask, kernel2);
 		Imgproc.GaussianBlur(imgMask, imgMask, new Size(5,5), 0);
 
@@ -213,7 +213,7 @@ public  class PreprocessorImpl implements Preprocessor {
 		
 	}
 	//función que verifica multiples contornos para una misma imagen-->solo guarda un contorno por imagen
-	private List<Mat> ValidaImag(List<Mat> M)
+	/*private List<Mat> ValidaImag(List<Mat> M)
 	{
 		List<Mat> aux = new ArrayList<Mat>();
 		int act;
@@ -235,7 +235,7 @@ public  class PreprocessorImpl implements Preprocessor {
 			}
 		return aux;
 		
-	}
+	}*/
 
 
 	//función que genera los output de las imagenes procesadas
