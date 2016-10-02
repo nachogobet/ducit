@@ -24,7 +24,7 @@ public  class PreprocessorImpl implements Preprocessor {
 
 
 
-	public BufferedImage doPreprocess(String path, ColorScalar scalar){
+	public BufferedImage doPreprocess(String path, ColorScalar scalar, int functionality){
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		Mat source = Imgcodecs.imread(path);
 		Mat marcado = new Mat();
@@ -37,7 +37,10 @@ public  class PreprocessorImpl implements Preprocessor {
 		Imgproc.GaussianBlur(marcado, gauss, new Size(3,3), 0);
 		Imgproc.adaptiveThreshold(gauss, adapt, 255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY,15, 4);
 
-		return DucitUtils.cleanLines(DucitUtils.mat2Img(adapt));
+		if(functionality == 1)
+			return DucitUtils.cleanLines(DucitUtils.mat2Img(adapt));
+		else
+			return DucitUtils.mat2Img(gauss);
 	}
 
 	public void doPreprocessIMG(String path, ColorScalar scalar) {

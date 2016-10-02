@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import com.unounocuatro.ducit.utils.DucitUtils;
+
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.TessAPI;
 import net.sourceforge.tess4j.Tesseract1;
@@ -16,10 +18,14 @@ public class ProcessorImpl implements Processor {
 	private Properties properties = new Properties();	
 	
 
-	public String doProcess(BufferedImage image) throws Exception {
+	public String doProcess(BufferedImage image, int functionality) throws Exception {
 		//loadConfiguration();
 		setOCRConfig();
-		return instance.doOCR(image);
+		if(functionality==0)
+			instance.setPageSegMode(TessAPI.TessPageSegMode.PSM_SPARSE_TEXT);
+		else if(functionality==2)
+			instance.setPageSegMode(TessAPI.TessPageSegMode.PSM_SPARSE_TEXT);
+		return DucitUtils.cleanText(instance.doOCR(image).replaceAll("(?m)^[ \t]*\r?\n", ""));
 	}
 
 	private void loadConfiguration() throws IOException {
@@ -42,6 +48,6 @@ private void setOCRConfig() {
 //	instance.setDatapath(properties.getProperty("data_path"));
 	//instance.setPageSegMode(4);
 	instance.setOcrEngineMode(TessAPI.TessOcrEngineMode.OEM_DEFAULT);
-	instance.setPageSegMode(TessAPI.TessPageSegMode.PSM_AUTO);
+	//instance.setPageSegMode(TessAPI.TessPageSegMode.PSM_AUTO);
 }
 }

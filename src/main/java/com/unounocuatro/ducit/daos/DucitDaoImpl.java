@@ -3,6 +3,7 @@ package com.unounocuatro.ducit.daos;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -25,6 +26,8 @@ public class DucitDaoImpl implements DucitDAO{
 	public String getWordMeaning(String word) throws SQLException {
 		Connection conn = null;
 		Statement stmt = null;
+		if(word.length()==0)
+			return null;
 		conn = DriverManager.getConnection(DB_URL,USER,PASS);
 		stmt = conn.createStatement();
 		String sql;
@@ -40,8 +43,13 @@ public class DucitDaoImpl implements DucitDAO{
 		conn.setRequestMethod("GET");
 		conn.setRequestProperty("Accept", "application/json");
 
-		if (conn.getResponseCode() != 200) throw new RuntimeException("Failed : HTTP error code : "
+		try{
+			if (conn.getResponseCode() != 200) throw new RuntimeException("Failed : HTTP error code : "
 					+ conn.getResponseCode());
+		} catch (MalformedURLException e){
+			return null;
+		}
+		
 
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -55,13 +63,18 @@ public class DucitDaoImpl implements DucitDAO{
 		JsonElement jelement = new JsonParser().parse(sb.toString());
 		JsonObject  jobject = jelement.getAsJsonObject();
 		sb.setLength(0);
-		int size = jobject.getAsJsonObject("query").getAsJsonArray("search").size();
-		while(i < size){
-			JsonElement locObj = jobject.getAsJsonObject("query")
-					.getAsJsonArray("search").get(i);
-			sb.append(locObj.getAsJsonObject().get("snippet").getAsString());
-			i++;
+		try{
+			int size = jobject.getAsJsonObject("query").getAsJsonArray("search").size();
+			while(i < size){
+				JsonElement locObj = jobject.getAsJsonObject("query")
+						.getAsJsonArray("search").get(i);
+				sb.append(locObj.getAsJsonObject().get("snippet").getAsString());
+				i++;
+			}
+		} catch(NullPointerException e){
+			return null;
 		}
+		
 
 		return sb.toString();
 	}
@@ -74,7 +87,16 @@ public class DucitDaoImpl implements DucitDAO{
 		String sql;
 		sql = "SELECT synonym FROM word w WHERE w.word LIKE '" + word + "'";
 		ResultSet rs = stmt.executeQuery(sql);
-		return (rs.next())? rs.getString(1) + "(S)" : null;
+		String result = "";
+		if(rs.next()){
+			result = rs.getString(1);
+			if(result != null && !result.contains("null"))
+				result = result.replace("|", "-");
+			else
+				result = "sin resultados";
+		}
+		
+		return result;
 	}
 	
 	public String getAntonyms(String word) throws SQLException {
@@ -85,7 +107,16 @@ public class DucitDaoImpl implements DucitDAO{
 		String sql;
 		sql = "SELECT antonym FROM word w WHERE w.word LIKE '" + word + "'";
 		ResultSet rs = stmt.executeQuery(sql);
-		return (rs.next())? rs.getString(1) + "(A)" : null;
+		String result = "";
+		if(rs.next()){
+			result = rs.getString(1);
+			if(result != null && !result.contains("null"))
+				result = result.replace("|", "-");
+			else
+				result = "sin resultados";
+		}
+		
+		return result;
 	}
 
 }

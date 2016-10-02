@@ -57,7 +57,7 @@ public class EngineImpl implements Engine {
 
 	private void setActions() throws FileNotFoundException {
 		@SuppressWarnings("resource")
-		Scanner in = new Scanner(new FileReader("./src/main/resources/config.txt"));
+		Scanner in = new Scanner(new FileReader("C:/ducit/config.txt"));
 		int index;
 		int color;
 		for(int i=0; i<5; i++){
@@ -69,15 +69,15 @@ public class EngineImpl implements Engine {
 
 	private void generatePreview() throws IOException {
 		File outputfile = new File("./src/main/resources/images/preview.jpg");
-		ImageIO.write(this.preprocessor.doPreprocess(this.filePath, ColorScalar.YELLOW), "jpg", outputfile);	
+		ImageIO.write(this.preprocessor.doPreprocess(this.filePath, ColorScalar.VIOLET, 0), "jpg", outputfile);	
 	}
 
 	private void process() throws SQLException, Exception{
-		printWithProtocol("plano", this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[0])), 1);
-		printSynonymsAntonyms(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[1])));
+		printWithProtocol("plano", this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[0], 0), 0), 1);
+		printSynonymsAntonyms(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[1], 1), 1));
 		//this.preprocessor.doPreprocessIMG(this.filePath, this.actions[2]);
-		printWordMeanings(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[3])));
-		printDefinitions(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[4])));
+		printWordMeanings(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[3], 3), 3));
+		printDefinitions(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[4], 4), 4));
 	}
 
 	private void printDefinitions(String result) throws Exception {
@@ -87,9 +87,9 @@ public class EngineImpl implements Engine {
 	private void printWithProtocol(String expression, String result, int functionality){
 		if(!expression.isEmpty() && expression != null){
 			if(result != null && !result.equals("null"))
-				System.out.println(System.currentTimeMillis()+ "|" + functionality + "|" + expression + "|" + result + "##");
+				System.out.println(System.currentTimeMillis()+ "|" + functionality + "|" + expression + "|" + result + "#");
 			else
-				System.out.println(System.currentTimeMillis()+ "|" + functionality + "|" + expression + "|" + "expresión sin resultados" + "##");
+				System.out.println(System.currentTimeMillis()+ "|" + functionality + "|" + expression + "|" + "expresión sin resultados" + "#");
 		}
 	}
 
@@ -101,9 +101,9 @@ public class EngineImpl implements Engine {
 	private void printSynonymsAntonyms(String result) throws SQLException {
 		String[] array = DucitUtils.getStringArray(result);
 		for(int i=0; i< array.length; i++){
-			printWithProtocol(array[i], this.dao.getSynonyms(array[i]), 2);
-			printWithProtocol(array[i], this.dao.getAntonyms(array[i]), 2);
+			printWithProtocol(array[i], this.dao.getSynonyms(array[i]) + "%" + this.dao.getAntonyms(array[i]), 2);
 		}
+		
 	}
 
 	private void setPreprocessor() {

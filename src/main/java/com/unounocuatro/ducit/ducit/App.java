@@ -10,8 +10,10 @@ public class App
     public static void main( String[] args ) throws Exception
     {	        
         try {
+        	long start = System.currentTimeMillis();
         	Engine engine = EngineImpl.getInstance();
 			engine.scan(args[0]);
+			System.out.println("Tiempo de ejecución: " + (System.currentTimeMillis() - start) / 1000 + " segundos");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

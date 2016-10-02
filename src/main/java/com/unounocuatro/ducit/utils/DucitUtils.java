@@ -76,4 +76,13 @@ public class DucitUtils {
 		
 		return words;
 	}
+
+	public static String cleanText(String text) {
+		/*for(int i=0; i<text.length(); i++ ){
+			if(text.charAt(i) == '\n' && text.charAt(i-1) != '.'){
+				text = text.substring(0,i) + " " + text.substring(i+1);
+			}
+		}*/
+		return text;
+	}
 }
