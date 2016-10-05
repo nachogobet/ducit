@@ -45,9 +45,10 @@ public  class PreprocessorImpl implements Preprocessor {
 
 	public void doPreprocessIMG(String path, ColorScalar scalar) {
 		
+			System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 			Mat imgProc = new Mat();
 			Mat imgFinal = new Mat();//imagen final que se entregará al PROCESADOR
-			Mat imgFuente = Imgcodecs.imread("test18.jpg");
+			Mat imgFuente = Imgcodecs.imread(path);
 
 			List<Mat> imgList = new ArrayList<Mat>();
 			Mat canny = new Mat(imgFuente.height(),imgFuente.width(),1);
@@ -79,7 +80,7 @@ public  class PreprocessorImpl implements Preprocessor {
 			DibujarContorno(dibujo, contorno, curvaAprox, distAprox, jerarquia,imgFuente, imgFinal, imgList);
 			
 			
-			Imgcodecs.imwrite("ContornosFinal.jpg", dibujo);
+			
 			
 
 			//imgList=ValidaImag(imgList);
@@ -112,8 +113,7 @@ public  class PreprocessorImpl implements Preprocessor {
 		Imgproc.cvtColor(Img, imgAux, Imgproc.COLOR_BGR2HSV);
 		
 		
-		//creo una imagen con las cosas que estan en azul
-		//Core.inRange(imgAux, azulBajo, azulAlto, imgMask);
+
 		
 		//creo una imagen con las cosas que estan en naranja
 		Core.inRange(imgAux,s.getBottom(), s.getTop(), imgMask);
@@ -177,13 +177,25 @@ public  class PreprocessorImpl implements Preprocessor {
 					
 				//veo de quedarme solo con los contornos externos de una misma imagen
 
-				if(area[j]>500000)	
+				if(area[j]>10000)	
 				{	
 					
 					Imgproc.rectangle(d, new Point(recta.x, recta.y), new Point(recta.x + recta.width, recta.y + (recta.height)), new Scalar(255,0,0));
 					ifin=ifuente.submat(recta.y, recta.y + recta.height, recta.x, recta.x + recta.width);
 					if(cont>0)
-						{	if((recta.x >= xInicial && recta.y >= yInicial )|| (recta.y+recta.height)<=yFinal&&(recta.x+recta.width)<=xFinal)
+						{	
+						
+							if((yInicial - recta.y) >=150 || (recta.x - xFinal) >= 150)
+								{
+									ilist.add(ifin);
+								}
+							else
+								{
+									System.out.println("Contorno dentro de contorno-->IGNORO!!!\n");
+								}
+						
+						
+							/*if((recta.x >= xInicial && recta.y >= yInicial )|| (recta.y+recta.height)<=yFinal&&(recta.x+recta.width)<=xFinal)
 								
 								{
 									//System.out.println("Contorno dentro de contorno-->IGNORO!!!\n");
@@ -196,16 +208,17 @@ public  class PreprocessorImpl implements Preprocessor {
 									yInicial=recta.y;
 									yFinal=recta.y+recta.height;
 									
-								}
+								}*/
 						}
 					else
 						{
 							ilist.add(ifin);
-							xInicial=recta.x;
-							xFinal=recta.x + recta.width;
-							yInicial=recta.y;
-							yFinal=recta.y + recta.height;
+						
 						}
+					xInicial=recta.x;
+					xFinal=recta.x + recta.width;
+					yInicial=recta.y;
+					yFinal=recta.y + recta.height;
 					cont++;
 					
 				}
@@ -247,7 +260,7 @@ public  class PreprocessorImpl implements Preprocessor {
 	{
 		for(int i=0;i<M.size();i++)
 			{
-				Imgcodecs.imwrite( "procesoFinaladasd"+(i+1)+".jpg", M.get(i));
+				Imgcodecs.imwrite( "SubIMG_N"+(i+1)+".jpg", M.get(i));
 			}
 		
 	}
