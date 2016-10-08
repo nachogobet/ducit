@@ -6,5 +6,5 @@ import com.unounocuatro.ducit.scalars.ColorScalar;
 
 public interface Preprocessor {
 	BufferedImage doPreprocess(String path, ColorScalar scalar, int functionality);
-	void doPreprocessIMG(String path, ColorScalar scalar);
+	void doPreprocessIMG(String path, String destination, ColorScalar scalar);
 }

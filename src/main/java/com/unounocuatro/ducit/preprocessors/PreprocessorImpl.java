@@ -1,6 +1,7 @@
 package com.unounocuatro.ducit.preprocessors;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,13 +38,13 @@ public  class PreprocessorImpl implements Preprocessor {
 		Imgproc.GaussianBlur(marcado, gauss, new Size(3,3), 0);
 		Imgproc.adaptiveThreshold(gauss, adapt, 255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY,15, 4);
 
-		if(functionality == 1)
+		if(functionality == 123)
 			return DucitUtils.cleanLines(DucitUtils.mat2Img(adapt));
 		else
-			return DucitUtils.mat2Img(gauss);
+			return DucitUtils.mat2Img(adapt);
 	}
 
-	public void doPreprocessIMG(String path, ColorScalar scalar) {
+	public void doPreprocessIMG(String path, String destination, ColorScalar scalar) {
 		
 			System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 			Mat imgProc = new Mat();
@@ -87,11 +88,9 @@ public  class PreprocessorImpl implements Preprocessor {
 
 			
 			if(imgList.size() != 0)
-				GeneraImag(imgList);
+				GeneraImag(imgList, destination);
 			else
 				System.out.println("No se encontraron imágenes\n");
-			
-			System.out.println("\nTODO OK!!!");
 				
 			
 			
@@ -117,7 +116,6 @@ public  class PreprocessorImpl implements Preprocessor {
 		
 		//creo una imagen con las cosas que estan en naranja
 		Core.inRange(imgAux,s.getBottom(), s.getTop(), imgMask);
-		
 		
 		
 		//filtramos ruido de la imagen
@@ -189,10 +187,7 @@ public  class PreprocessorImpl implements Preprocessor {
 								{
 									ilist.add(ifin);
 								}
-							else
-								{
-									System.out.println("Contorno dentro de contorno-->IGNORO!!!\n");
-								}
+						
 						
 						
 							/*if((recta.x >= xInicial && recta.y >= yInicial )|| (recta.y+recta.height)<=yFinal&&(recta.x+recta.width)<=xFinal)
@@ -256,11 +251,11 @@ public  class PreprocessorImpl implements Preprocessor {
 
 	//función que genera los output de las imagenes procesadas
 
-	private void GeneraImag(List<Mat> M)
+	private void GeneraImag(List<Mat> M, String destination)
 	{
 		for(int i=0;i<M.size();i++)
 			{
-				Imgcodecs.imwrite( "SubIMG_N"+(i+1)+".jpg", M.get(i));
+				Imgcodecs.imwrite("C:/ducit/generadas/IMG_N" + (i+1) + ".jpg", M.get(i));
 			}
 		
 	}

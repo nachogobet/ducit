@@ -34,6 +34,8 @@ public class EngineImpl implements Engine {
 	private Processor processor;
 
 	private String filePath;
+	
+	private String destination;
 
 	private static EngineImpl engine = null;
 
@@ -44,8 +46,9 @@ public class EngineImpl implements Engine {
 		return (engine==null)? new EngineImpl() : engine;
 	}
 
-	public void scan(String filePath) throws Exception {
+	public void scan(String filePath, String destination) throws Exception {
 		this.filePath = filePath;
+		this.destination = destination;
 		setPreprocessor();
 		setProcessor();
 		setActions();
@@ -73,11 +76,11 @@ public class EngineImpl implements Engine {
 	}
 
 	private void process() throws SQLException, Exception{
-		//printWithProtocol("plano", this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[0], 0), 0), 1);
-		//printSynonymsAntonyms(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[1], 1), 1));
-		this.preprocessor.doPreprocessIMG(this.filePath, this.actions[2]);
-		//printWordMeanings(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[3], 3), 3));
-		//printDefinitions(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[4], 4), 4));
+		printWithProtocol("plano", this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[0], 0), 0), 1);
+		printSynonymsAntonyms(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[1], 1), 1));
+		this.preprocessor.doPreprocessIMG(this.filePath, this.destination, this.actions[2]);
+		printWordMeanings(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[3], 3), 3));
+		printDefinitions(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[4], 4), 4));
 	}
 
 	private void printDefinitions(String result) throws Exception {
@@ -95,13 +98,16 @@ public class EngineImpl implements Engine {
 
 	private void printWordMeanings(String result) throws SQLException {
 		String[] array = DucitUtils.getStringArray(result);
-		for(int i=0; i< array.length; i++) printWithProtocol(array[i], this.dao.getWordMeaning(array[i]), 4);
+		for(int i=0; i< array.length; i++)
+			if(array[i].length()>2 && !array[i].matches(".*\\d.*"))
+				printWithProtocol(array[i], this.dao.getWordMeaning(array[i]), 4);
 	}
 
 	private void printSynonymsAntonyms(String result) throws SQLException {
 		String[] array = DucitUtils.getStringArray(result);
 		for(int i=0; i< array.length; i++){
-			printWithProtocol(array[i], this.dao.getSynonyms(array[i]) + "%" + this.dao.getAntonyms(array[i]), 2);
+			if(array[i].length()>2 && !array[i].matches(".*\\d.*"))
+				printWithProtocol(array[i], this.dao.getSynonyms(array[i]) + "%" + this.dao.getAntonyms(array[i]), 2);
 		}
 		
 	}
@@ -116,7 +122,7 @@ public class EngineImpl implements Engine {
 	}
 
 	private void setBufferedImage(String filePath) throws IOException {
-		this.image = ImageIO.read(new File(filePath));	
+		this.image = ImageIO.read(new File(filePath));
 	}
 
 }

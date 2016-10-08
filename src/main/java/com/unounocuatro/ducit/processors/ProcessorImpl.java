@@ -28,6 +28,7 @@ public class ProcessorImpl implements Processor {
 		return DucitUtils.cleanText(instance.doOCR(image).replaceAll("(?m)^[ \t]*\r?\n", ""));
 	}
 
+	@SuppressWarnings("unused")
 	private void loadConfiguration() throws IOException {
 		InputStream in = getClass().getResource("./src/main/resources/config.properties").openStream();
 		properties = new Properties();
