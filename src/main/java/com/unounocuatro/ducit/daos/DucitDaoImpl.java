@@ -38,7 +38,7 @@ public class DucitDaoImpl implements DucitDAO{
 
 	public String getDefinition(String word) throws Exception {
 		int i=0;
-		URL url = new URL("https://es.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + word.replace(" ", "%20") + "&format=json");
+		URL url = new URL("https://es.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + word.replaceAll("\\r\\n", "").replace(" ", "%20") + "&format=json");
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("GET");
 		conn.setRequestProperty("Accept", "application/json");
