@@ -38,10 +38,22 @@ public  class PreprocessorImpl implements Preprocessor {
 		Imgproc.GaussianBlur(marcado, gauss, new Size(3,3), 0);
 		Imgproc.adaptiveThreshold(gauss, adapt, 255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY,15, 4);
 
-		if(functionality == 123)
-			return DucitUtils.cleanLines(DucitUtils.mat2Img(adapt));
-		else
+		
+		switch(functionality){
+		case(0):
 			return DucitUtils.mat2Img(adapt);
+		case(1):
+			return DucitUtils.cleanLines(DucitUtils.mat2Img(adapt));
+		case(2):
+			return DucitUtils.mat2Img(gauss);
+		case(3):
+			return DucitUtils.cleanLines(DucitUtils.mat2Img(adapt));
+		case(4):
+			return DucitUtils.cleanLines(DucitUtils.mat2Img(adapt));
+		}
+
+		System.out.println("estas mandando functionality mal");
+		return null;
 	}
 
 	public void doPreprocessIMG(String path, String destination, ColorScalar scalar) {

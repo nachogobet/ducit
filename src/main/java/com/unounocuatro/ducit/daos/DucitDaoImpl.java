@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -38,18 +39,10 @@ public class DucitDaoImpl implements DucitDAO{
 
 	public String getDefinition(String word) throws Exception {
 		int i=0;
-		URL url = new URL("https://es.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + word.replaceAll("\\r\\n", "").replace(" ", "%20") + "&format=json");
+		URL url = new URL("http://es.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + word.replace(" ", "%20").replaceAll("\\r\\n", "") + "&format=json");
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("GET");
 		conn.setRequestProperty("Accept", "application/json");
-
-		try{
-			if (conn.getResponseCode() != 200) throw new RuntimeException("Failed : HTTP error code : "
-					+ conn.getResponseCode());
-		} catch (MalformedURLException e){
-			return null;
-		}
-		
 
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(

@@ -78,11 +78,9 @@ public class DucitUtils {
 	}
 
 	public static String cleanText(String text) {
-		/*for(int i=0; i<text.length(); i++ ){
-			if(text.charAt(i) == '\n' && text.charAt(i-1) != '.'){
-				text = text.substring(0,i) + " " + text.substring(i+1);
-			}
-		}*/
+		text = text.replaceAll("^\\s+", "");
+
+		text = text.replaceAll("\\s+$", "");
 		return text;
 	}
 }

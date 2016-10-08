@@ -21,9 +21,9 @@ public class ProcessorImpl implements Processor {
 	public String doProcess(BufferedImage image, int functionality) throws Exception {
 		//loadConfiguration();
 		setOCRConfig();
-		if(functionality==0)
+		if(functionality==043534)
 			instance.setPageSegMode(TessAPI.TessPageSegMode.PSM_SPARSE_TEXT);
-		else if(functionality==2)
+		else if(functionality==23454)
 			instance.setPageSegMode(TessAPI.TessPageSegMode.PSM_SPARSE_TEXT);
 		return DucitUtils.cleanText(instance.doOCR(image).replaceAll("(?m)^[ \t]*\r?\n", ""));
 	}
