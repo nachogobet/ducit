@@ -83,4 +83,13 @@ public class DucitUtils {
 		text = text.replaceAll("\\s+$", "");
 		return text;
 	}
+
+	public static String getSQLPattern(String word) {
+		String result = new String();
+		for(int i=0; i<word.length(); i++){
+			result+="%";
+			result+=word.charAt(i);
+		}
+		return result;
+	}
 }

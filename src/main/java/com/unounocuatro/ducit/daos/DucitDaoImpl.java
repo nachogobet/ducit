@@ -15,6 +15,7 @@ import java.sql.Statement;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.unounocuatro.ducit.utils.DucitUtils;
 
 public class DucitDaoImpl implements DucitDAO{
 
@@ -25,6 +26,7 @@ public class DucitDaoImpl implements DucitDAO{
 	private static final String PASS = "weblogic1";
 
 	public String getWordMeaning(String word) throws SQLException {
+		String definiteWord = DucitUtils.getSQLPattern(word);
 		Connection conn = null;
 		Statement stmt = null;
 		if(word.length()==0)
@@ -32,7 +34,7 @@ public class DucitDaoImpl implements DucitDAO{
 		conn = DriverManager.getConnection(DB_URL,USER,PASS);
 		stmt = conn.createStatement();
 		String sql;
-		sql = "SELECT meaning FROM word w WHERE w.word LIKE '" + word + "' OR w.word LIKE '" + word.substring(0,word.length()-1) + "'";
+		sql = "SELECT meaning FROM word w WHERE w.word LIKE '" + definiteWord + "'";
 		ResultSet rs = stmt.executeQuery(sql);
 		return (rs.next())? rs.getString(1) : null;
 	}
@@ -73,12 +75,13 @@ public class DucitDaoImpl implements DucitDAO{
 	}
 
 	public String getSynonyms(String word) throws SQLException {
+		String definiteWord = DucitUtils.getSQLPattern(word);
 		Connection conn = null;
 		Statement stmt = null;
 		conn = DriverManager.getConnection(DB_URL,USER,PASS);
 		stmt = conn.createStatement();
 		String sql;
-		sql = "SELECT synonym FROM word w WHERE w.word LIKE '" + word + "'";
+		sql = "SELECT synonym FROM word w WHERE w.word LIKE '" + definiteWord + "'";
 		ResultSet rs = stmt.executeQuery(sql);
 		String result = "";
 		if(rs.next()){
