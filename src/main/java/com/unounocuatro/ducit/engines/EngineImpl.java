@@ -84,7 +84,8 @@ public class EngineImpl implements Engine {
 	}
 
 	private void printDefinitions(String result) throws Exception {
-		printWithProtocol(result, this.dao.getDefinition(DucitUtils.cleanText(result)), 5);
+		if(result.length()>=3)
+			printWithProtocol(result, this.dao.getDefinition(DucitUtils.cleanText(result)), 5);
 	}
 	
 	private void printWithProtocol(String expression, String result, int functionality){
@@ -100,8 +101,14 @@ public class EngineImpl implements Engine {
 		String[] array = DucitUtils.getStringArray(result);
 		for(int i=0; i< array.length; i++)
 			if(array[i].length()>2 && !array[i].matches(".*\\d.*")){
-				String result2 = this.dao.getWordMeaning(array[i]);				
-				printWithProtocol(result2.substring(0, result2.indexOf("zzz")), result2.substring(result2.indexOf("zzz") +3, result2.length()-1), 4);
+				String result2 = this.dao.getWordMeaning(DucitUtils.cleanText(array[i]));
+				if(!result2.equals("zzz")){
+					if(result2.lastIndexOf("zzz")!= result2.length()-3)
+						printWithProtocol(result2.substring(0, result2.indexOf("zzz")), result2.substring(result2.indexOf("zzz") +3, result2.length()-1), 4);
+					else
+						printWithProtocol(result2.substring(0, result2.indexOf("zzz")), "", 4);
+				}
+				
 			}			
 	}
 
@@ -110,8 +117,8 @@ public class EngineImpl implements Engine {
 		String[] array = DucitUtils.getStringArray(result);
 		for(int i=0; i< array.length; i++){
 			if(array[i].length()>2 && !array[i].matches(".*\\d.*")){
-				String synonyms = this.dao.getSynonyms(array[i]);
-				String antonyms = "%" + this.dao.getAntonyms(array[i]);
+				String synonyms = this.dao.getSynonyms(DucitUtils.cleanText(array[i]));
+				String antonyms = "%" + this.dao.getAntonyms(DucitUtils.cleanText(array[i]));
 				String resultString = new String("");
 				if(!synonyms.equals("zzz")){
 					correctWord = synonyms.substring(1, synonyms.indexOf("zzz"));

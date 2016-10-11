@@ -24,7 +24,7 @@ public class DucitDaoImpl implements DucitDAO{
 	private static final String PASS = "weblogic1";
 
 	public String getWordMeaning(String word) throws SQLException {
-		String correct = new String();
+		String correct = new String(word);
 		String result = new String();
 		int min = Integer.MAX_VALUE;
 		String definiteWord = DucitUtils.getSQLPattern(word);
@@ -39,7 +39,7 @@ public class DucitDaoImpl implements DucitDAO{
 		while(rs.next()){
 			if(rs.getString(1)!=null){
 				int distance = DucitUtils.getLevenshteinDistance(word, rs.getString(2));
-				if(distance < min){
+				if(distance < 3 && distance < min){
 					min = distance;
 					result = rs.getString(1);
 					correct = rs.getString(2);
