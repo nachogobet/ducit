@@ -99,15 +99,33 @@ public class EngineImpl implements Engine {
 	private void printWordMeanings(String result) throws SQLException {
 		String[] array = DucitUtils.getStringArray(result);
 		for(int i=0; i< array.length; i++)
-			if(array[i].length()>2 && !array[i].matches(".*\\d.*"))
-				printWithProtocol(array[i], this.dao.getWordMeaning(array[i]), 4);
+			if(array[i].length()>2 && !array[i].matches(".*\\d.*")){
+				String result2 = this.dao.getWordMeaning(array[i]);				
+				printWithProtocol(result2.substring(0, result2.indexOf("zzz")), result2.substring(result2.indexOf("zzz") +3, result2.length()-1), 4);
+			}			
 	}
 
 	private void printSynonymsAntonyms(String result) throws SQLException {
+		String correctWord = new String(result);
 		String[] array = DucitUtils.getStringArray(result);
 		for(int i=0; i< array.length; i++){
-			if(array[i].length()>2 && !array[i].matches(".*\\d.*"))
-				printWithProtocol(array[i], this.dao.getSynonyms(array[i]) + "%" + this.dao.getAntonyms(array[i]), 2);
+			if(array[i].length()>2 && !array[i].matches(".*\\d.*")){
+				String synonyms = this.dao.getSynonyms(array[i]);
+				String antonyms = "%" + this.dao.getAntonyms(array[i]);
+				String resultString = new String("");
+				if(!synonyms.equals("zzz")){
+					correctWord = synonyms.substring(1, synonyms.indexOf("zzz"));
+					resultString+= synonyms.substring(synonyms.indexOf("zzz") +3, synonyms.length());
+				} 
+				if(!antonyms.equals("zzz")){
+					correctWord = antonyms.substring(1, antonyms.indexOf("zzz"));
+					resultString += "%" + antonyms.substring(antonyms.indexOf("zzz") +3, antonyms.length());
+				}					
+				if(resultString.equals("")){
+					printWithProtocol(correctWord, "no results", 2);
+				} else
+					printWithProtocol(correctWord,  resultString, 2);
+			}				
 		}
 		
 	}
