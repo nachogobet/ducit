@@ -33,7 +33,7 @@ public class DucitDaoImpl implements DucitDAO{
 		conn = DriverManager.getConnection(DB_URL,USER,PASS);
 		stmt = conn.createStatement();
 		String sql;
-		sql = "SELECT meaning,word FROM word w WHERE w.word LIKE '" + definiteWord + "'";
+		sql = "SELECT meaning,word FROM word w WHERE w.word LIKE '" + definiteWord + "' OR w.word LIKE '" + definiteWord.substring(0, definiteWord.length()-2) + "'"+ " OR w.word LIKE '" + definiteWord.substring(0, definiteWord.length()-4) + "'";
 		ResultSet rs = stmt.executeQuery(sql);
 		
 		while(rs.next()){
@@ -97,7 +97,7 @@ public class DucitDaoImpl implements DucitDAO{
 		conn = DriverManager.getConnection(DB_URL,USER,PASS);
 		stmt = conn.createStatement();
 		String sql;
-		sql = "SELECT synonym, word FROM word w WHERE w.word LIKE '" + definiteWord + "'";
+		sql = "SELECT synonym, word FROM word w WHERE w.word LIKE '" + definiteWord + "' OR w.word LIKE '" + definiteWord.substring(0, definiteWord.length()-2) + "'" + " OR w.word LIKE '" + definiteWord.substring(0, definiteWord.length()-4) + "'";
 		ResultSet rs = stmt.executeQuery(sql);
 		while(rs.next()){
 			if(rs.getString(1)!=null){
@@ -123,7 +123,7 @@ public class DucitDaoImpl implements DucitDAO{
 		conn = DriverManager.getConnection(DB_URL,USER,PASS);
 		stmt = conn.createStatement();
 		String sql;
-		sql = "SELECT antonym, word FROM word w WHERE w.word LIKE '" + definiteWord + "'";
+		sql = "SELECT antonym, word FROM word w WHERE w.word LIKE '" + definiteWord + "' OR w.word LIKE '" + definiteWord.substring(0, definiteWord.length()-2) + "'"+ " OR w.word LIKE '" + definiteWord.substring(0, definiteWord.length()-4) + "'";
 		ResultSet rs = stmt.executeQuery(sql);
 		while(rs.next()){
 			if(rs.getString(1)!=null){
