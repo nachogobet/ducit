@@ -24,32 +24,18 @@ public class DucitDaoImpl implements DucitDAO{
 	private static final String PASS = "weblogic1";
 
 	public String getWordMeaning(String word) throws SQLException {
-		String correct = new String(word);
-		String result = new String();
-		int min = Integer.MAX_VALUE;
-		String definiteWord = DucitUtils.getSQLPattern(word);
-		Connection conn = null;
-		Statement stmt = null;
-		conn = DriverManager.getConnection(DB_URL,USER,PASS);
-		stmt = conn.createStatement();
+		Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+		Statement stmt = conn.createStatement();
 		String sql;
-		sql = "SELECT meaning,word FROM word w WHERE w.word LIKE '" + definiteWord + "' OR w.word LIKE '" + definiteWord.substring(0, definiteWord.length()-2) + "'"+ " OR w.word LIKE '" + definiteWord.substring(0, definiteWord.length()-4) + "'";
+		sql = "SELECT meaning FROM word w WHERE w.word LIKE '" + word + "'";
 		ResultSet rs = stmt.executeQuery(sql);
-		
+		String result = new String();
+
 		while(rs.next()){
-			if(rs.getString(1)!=null){
-				int distance = DucitUtils.getLevenshteinDistance(word, rs.getString(2));
-				if(distance < 3 && distance < min){
-					min = distance;
-					result = rs.getString(1);
-					correct = rs.getString(2);
-				} else if(distance == min){
-					result += "%" + rs.getString(1);
-				}
-			}
+			result += rs.getString(1) + "%";
 		}
 		
-		return correct + "zzz" + result;
+		return result;
 	}
 
 	public String getDefinition(String word) throws Exception {
@@ -88,55 +74,44 @@ public class DucitDaoImpl implements DucitDAO{
 	}
 
 	public String getSynonyms(String word) throws SQLException {
-		String correct = new String();
-		String result = new String();
-		int min = Integer.MAX_VALUE;
-		String definiteWord = DucitUtils.getSQLPattern(word);
-		Connection conn = null;
-		Statement stmt = null;
-		conn = DriverManager.getConnection(DB_URL,USER,PASS);
-		stmt = conn.createStatement();
+		Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+		Statement stmt = conn.createStatement();
 		String sql;
-		sql = "SELECT synonym, word FROM word w WHERE w.word LIKE '" + definiteWord + "' OR w.word LIKE '" + definiteWord.substring(0, definiteWord.length()-2) + "'" + " OR w.word LIKE '" + definiteWord.substring(0, definiteWord.length()-4) + "'";
+		sql = "SELECT Synonym FROM word w WHERE w.word LIKE '" + word + "'";
 		ResultSet rs = stmt.executeQuery(sql);
-		while(rs.next()){
-			if(rs.getString(1)!=null){
-				int distance = DucitUtils.getLevenshteinDistance(word, rs.getString(2));
-				if(distance < min){
-					min = distance;
-					result = rs.getString(1);
-					correct = rs.getString(2);
-				}
-			}
-		}
-		
-		return correct + "zzz" + result.replace("|", "-");
+
+		return rs.getString(1).replace("|", "-");
 	}
 	
 	public String getAntonyms(String word) throws SQLException {
-		String result = new String();
-		String correct = new String();
-		int min = Integer.MAX_VALUE;
-		String definiteWord = DucitUtils.getSQLPattern(word);
-		Connection conn = null;
-		Statement stmt = null;
-		conn = DriverManager.getConnection(DB_URL,USER,PASS);
-		stmt = conn.createStatement();
+		Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+		Statement stmt = conn.createStatement();
 		String sql;
-		sql = "SELECT antonym, word FROM word w WHERE w.word LIKE '" + definiteWord + "' OR w.word LIKE '" + definiteWord.substring(0, definiteWord.length()-2) + "'"+ " OR w.word LIKE '" + definiteWord.substring(0, definiteWord.length()-4) + "'";
+		sql = "SELECT antonym FROM word w WHERE w.word LIKE '" + word + "'";
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		return rs.getString(1).replace("|", "-");
+	}
+
+	public String fixWord(String word) throws SQLException {
+		int min = Integer.MAX_VALUE;
+		String correct = new String(word);
+		Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+		Statement stmt = conn.createStatement();
+		String pattern = DucitUtils.getSQLPattern(word);
+		String sql = "SELECT word FROM word w WHERE w.word LIKE '" + pattern + "' OR w.word LIKE '" + pattern.substring(0, pattern.length()-2) + "'"+ " OR w.word LIKE '" + pattern.substring(0, pattern.length()-4) + "'";
 		ResultSet rs = stmt.executeQuery(sql);
 		while(rs.next()){
 			if(rs.getString(1)!=null){
-				int distance = DucitUtils.getLevenshteinDistance(word, rs.getString(2));
+				int distance = DucitUtils.getLevenshteinDistance(word, rs.getString(1));
 				if(distance < min){
 					min = distance;
-					result = rs.getString(1);
-					correct = rs.getString(2);
+					correct = rs.getString(1);
 				}
 			}
 		}
 		
-		return correct + "zzz" + result.replace("|", "-");
+		return correct;
 	}
 
 }

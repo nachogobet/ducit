@@ -10,4 +10,6 @@ public interface DucitDAO {
 	String getSynonyms(String word) throws SQLException;
 	
 	String getAntonyms(String word) throws SQLException;
+
+	String fixWord(String result) throws SQLException;
 }

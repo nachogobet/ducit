@@ -76,11 +76,16 @@ public class EngineImpl implements Engine {
 	}
 
 	private void process() throws SQLException, Exception{
-		printWithProtocol("plano", this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[0], 0), 0), 1);
+		printPlainText(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[0], 0), 0));
 		printSynonymsAntonyms(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[1], 1), 1));
 		this.preprocessor.doPreprocessIMG(this.filePath, this.destination, this.actions[2]);
 		printWordMeanings(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[3], 3), 3));
 		printDefinitions(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[4], 4), 4));
+	}
+	
+	private void printPlainText(String result) throws Exception {
+		if(result.length() > 5)
+			printWithProtocol("plano", result, 1);
 	}
 
 	private void printDefinitions(String result) throws Exception {
@@ -99,42 +104,22 @@ public class EngineImpl implements Engine {
 
 	private void printWordMeanings(String result) throws SQLException {
 		String[] array = DucitUtils.getStringArray(result);
-		for(int i=0; i< array.length; i++)
+		for(int i=0; i< array.length; i++){
 			if(array[i].length()>2 && !array[i].matches(".*\\d.*")){
-				String result2 = this.dao.getWordMeaning(DucitUtils.cleanText(array[i]));
-				if(!result2.equals("zzz")){
-					if(result2.lastIndexOf("zzz")!= result2.length()-3)
-						printWithProtocol(result2.substring(0, result2.indexOf("zzz")), result2.substring(result2.indexOf("zzz") +3, result2.length()-1), 4);
-					else
-						printWithProtocol(result2.substring(0, result2.indexOf("zzz")), "", 4);
-				}
-				
+				String word = this.dao.fixWord(DucitUtils.cleanText(array[i]));
+				printWithProtocol(word, this.dao.getWordMeaning(word), 4);
 			}			
+		}			
 	}
 
-	private void printSynonymsAntonyms(String result) throws SQLException {
-		String correctWord = new String(result);
+	private void printSynonymsAntonyms(String result) throws SQLException {		
 		String[] array = DucitUtils.getStringArray(result);
 		for(int i=0; i< array.length; i++){
 			if(array[i].length()>2 && !array[i].matches(".*\\d.*")){
-				String synonyms = this.dao.getSynonyms(DucitUtils.cleanText(array[i]));
-				String antonyms = "%" + this.dao.getAntonyms(DucitUtils.cleanText(array[i]));
-				String resultString = new String("");
-				if(!synonyms.equals("zzz")){
-					correctWord = synonyms.substring(1, synonyms.indexOf("zzz"));
-					resultString+= synonyms.substring(synonyms.indexOf("zzz") +3, synonyms.length());
-				} 
-				if(!antonyms.equals("zzz")){
-					correctWord = antonyms.substring(1, antonyms.indexOf("zzz"));
-					resultString += "%" + antonyms.substring(antonyms.indexOf("zzz") +3, antonyms.length());
-				}					
-				if(resultString.equals("")){
-					printWithProtocol(correctWord, "no results", 2);
-				} else
-					printWithProtocol(correctWord,  resultString, 2);
-			}				
-		}
-		
+				String word = this.dao.fixWord(DucitUtils.cleanText(array[i]));
+				printWithProtocol(word, this.dao.getSynonyms(word) + "%" + this.dao.getAntonyms(word), 2);
+			}			
+		}		
 	}
 
 	private void setPreprocessor() {
