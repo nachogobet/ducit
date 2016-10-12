@@ -99,7 +99,7 @@ public class DucitDaoImpl implements DucitDAO{
 		Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
 		Statement stmt = conn.createStatement();
 		String pattern = DucitUtils.getSQLPattern(word);
-		String sql = "SELECT word FROM word w WHERE w.word LIKE '" + pattern + "' OR w.word LIKE '" + pattern.substring(0, pattern.length()-2) + "'"+ " OR w.word LIKE '" + pattern.substring(0, pattern.length()-4) + "'";
+		String sql = "SELECT word FROM word w WHERE w.word REGEXP '" + pattern + "' OR w.word REGEXP '" + pattern.substring(0, pattern.length()-7) + "'"+ " OR w.word REGEXP '" + pattern.substring(0, pattern.length()-14) + "'";
 		ResultSet rs = stmt.executeQuery(sql);
 		while(rs.next()){
 			if(rs.getString(1)!=null){

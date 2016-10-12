@@ -84,10 +84,13 @@ public class DucitUtils {
 
 	public static String getSQLPattern(String word) {
 		String result = new String();
-		result+="%";
-		for(int i=0; i<word.length(); i++){		
-			result+=word.charAt(i);
-			result+="%";
+		result+="[a-z]*";
+		for(int i=0; i<word.length(); i++){	
+			if(word.charAt(i) != 'm')
+				result+=word.charAt(i);
+			else
+				result+="(in|ni|m)";
+			result+="[a-z]*";
 		}
 		return result;
 	}
