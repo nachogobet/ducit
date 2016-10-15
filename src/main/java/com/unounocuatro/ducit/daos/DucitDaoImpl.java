@@ -80,7 +80,10 @@ public class DucitDaoImpl implements DucitDAO{
 		sql = "SELECT Synonym FROM word w WHERE w.word LIKE '" + word + "'";
 		ResultSet rs = stmt.executeQuery(sql);
 
-		return rs.getString(1).replace("|", "-");
+		if(rs.next() && rs.getString(1)!= null && !rs.getString(1).isEmpty())
+			return rs.getString(1).replace("|", "-");
+		else
+			return "no hay sinonimos para esta palabra";
 	}
 	
 	public String getAntonyms(String word) throws SQLException {
@@ -90,16 +93,24 @@ public class DucitDaoImpl implements DucitDAO{
 		sql = "SELECT antonym FROM word w WHERE w.word LIKE '" + word + "'";
 		ResultSet rs = stmt.executeQuery(sql);
 		
-		return rs.getString(1).replace("|", "-");
+		if(rs.next() && rs.getString(1)!= null && !rs.getString(1).isEmpty())
+			return rs.getString(1).replace("|", "-");
+		else
+			return "no hay sinonimos para esta palabra";
 	}
 
 	public String fixWord(String word) throws SQLException {
+		// ESTE CODIGO DUCIT FUE CREADO POR EL PROJECT MANAGER y EL FOUNDER
 		int min = Integer.MAX_VALUE;
 		String correct = new String(word);
 		Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
 		Statement stmt = conn.createStatement();
 		String pattern = DucitUtils.getSQLPattern(word);
-		String sql = "SELECT word FROM word w WHERE w.word REGEXP '" + pattern + "' OR w.word REGEXP '" + pattern.substring(0, pattern.length()-7) + "'"+ " OR w.word REGEXP '" + pattern.substring(0, pattern.length()-14) + "'";
+		String sql;
+		if(word.charAt(word.length()-1) != 'm')
+			sql = "SELECT word FROM word w WHERE w.word REGEXP '" + pattern + "' OR w.word REGEXP '" + pattern.substring(0, pattern.length()-7) + "'"+ " OR w.word REGEXP '" + pattern.substring(0, pattern.length()-14) + "'";
+		else
+			sql = "SELECT word FROM word w WHERE w.word REGEXP '" + pattern + "' OR w.word REGEXP '" + pattern.substring(0, pattern.length()-15) + "'"+ " OR w.word REGEXP '" + pattern.substring(0, pattern.length()-22) + "'";
 		ResultSet rs = stmt.executeQuery(sql);
 		while(rs.next()){
 			if(rs.getString(1)!=null){
