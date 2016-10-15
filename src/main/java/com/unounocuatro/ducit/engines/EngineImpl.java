@@ -72,7 +72,7 @@ public class EngineImpl implements Engine {
 
 	private void generatePreview() throws IOException {
 		File outputfile = new File("./src/main/resources/images/preview.jpg");
-		ImageIO.write(this.preprocessor.doPreprocess(this.filePath, ColorScalar.VIOLET, 0), "jpg", outputfile);	
+		ImageIO.write(this.preprocessor.doPreprocess(this.filePath, ColorScalar.ORANGE, 0), "jpg", outputfile);	
 	}
 
 	private void process() throws SQLException, Exception{
@@ -84,6 +84,7 @@ public class EngineImpl implements Engine {
 	}
 	
 	private void printPlainText(String result) throws Exception {
+		result = DucitUtils.cleanPlainText(result);
 		if(result.length() > 5)
 			printWithProtocol("plano", result, 1);
 	}

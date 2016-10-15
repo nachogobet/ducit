@@ -172,4 +172,87 @@ public class DucitUtils {
 	      // actually has the most recent cost counts
 	      return p[n];
 	  }
+
+	public static String cleanPlainText(String result) {
+		String textArray[] = result.split("\\r\\n|\\n|\\r");
+		
+		for(int i=0; i<textArray.length; i++){
+			int errors = 0;
+			int size = textArray[i].length();
+			for(int j=1; j<size -1; j++){
+				if(isBadChar(textArray[i].charAt(j), textArray[i].charAt(j-1), textArray[i].charAt(j+1)))
+					errors++;							
+			}
+			if((float)errors/size > 0.1)
+				textArray[i] = "El segmento en esta posición fue detectado defectuosamente.";	
+		}
+		
+		return getTextFromString(textArray);
+	}
+
+	private static String getTextFromString(String[] textArray) {
+		StringBuilder strBuilder = new StringBuilder();
+		for (int i = 0; i < textArray.length; i++) {
+		   strBuilder.append(textArray[i]);
+		   strBuilder.append(System.getProperty("line.separator"));
+		}
+		return strBuilder.toString();
+	}
+
+	private static boolean isBadChar(char actual, char previous, char next) {
+		switch(actual){
+			case '°':
+				return true;
+			case '"':
+			{
+				// Ejemplos que arrojarían error:  PEPE "!STA	 |  TAMBI"N
+				if((previous == ' ' && !Character.isLetter(next)) || Character.isLetter(previous) && !Character.isLetter(next))
+					return true;
+				if(next == '.')
+					return true;
+			}
+			case '¡':
+			{
+				if(!Character.isLetter(next))
+					return true;
+			}
+			case '!':
+			{
+				if(!Character.isLetter(previous))
+					return true;
+			}
+			case '-':
+			{
+				if(previous == '.' || next == '.')
+					return true;
+				if(Character.isLetterOrDigit(previous) && next =='\\' )
+					return true;
+				if(Character.isLetter(previous) && next == ' ')
+					return true;
+			}
+			case '\'':
+				// Ejemplos que arrojarían error:  PEPE '!STA	 |  TAMBI'N
+				if((previous == ' ' && !Character.isLetter(next)) || (Character.isLetter(previous) && !Character.isLetter(next)))
+					return true;
+			case '.':
+				if (previous == '.' && Character.isLetter(next))
+					return true;
+				if (previous == ' ' && next == '.')
+					return true;
+				if (previous == '¡' || next == '¡')
+					return true;
+				if (previous == '-' ||next == '-')
+					return true;
+			case '#':
+				return true;
+			case '@':
+				return true;
+			case '|':
+				return true;
+			case '¿':
+				if (Character.isLetter(previous) || !Character.isLetter(next))
+					return true;
+		}
+			return false;
+	}	
 }

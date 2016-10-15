@@ -41,7 +41,7 @@ public  class PreprocessorImpl implements Preprocessor {
 		
 		switch(functionality){
 		case(0):
-			return DucitUtils.mat2Img(adapt);
+			return DucitUtils.mat2Img(gauss);
 		case(1):
 			return DucitUtils.cleanLines(DucitUtils.mat2Img(adapt));
 		case(2):
