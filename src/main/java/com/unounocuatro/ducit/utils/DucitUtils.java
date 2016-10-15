@@ -75,6 +75,8 @@ public class DucitUtils {
 	}
 
 	public static String cleanText(String text) {
+		text = text.replaceAll("_","");
+		text = text.replaceAll("?","");
 		text = text.replaceAll("^\\s+", "");
 		text = text.replaceAll("\\s+$", "");
 		text = text.replaceAll("á", "a").replaceAll("é", "e").replaceAll("í", "i").replaceAll("ó", "o").replaceAll("ú", "u");
