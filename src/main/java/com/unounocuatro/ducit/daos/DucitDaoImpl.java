@@ -107,10 +107,14 @@ public class DucitDaoImpl implements DucitDAO{
 		Statement stmt = conn.createStatement();
 		String pattern = DucitUtils.getSQLPattern(word);
 		String sql;
-		if(word.charAt(word.length()-1) != 'm')
-			sql = "SELECT word FROM word w WHERE w.word REGEXP '" + pattern + "' OR w.word REGEXP '" + pattern.substring(0, pattern.length()-7) + "'"+ " OR w.word REGEXP '" + pattern.substring(0, pattern.length()-14) + "'";
-		else
+		
+		if(word.charAt(word.length()-1) == 'm')
 			sql = "SELECT word FROM word w WHERE w.word REGEXP '" + pattern + "' OR w.word REGEXP '" + pattern.substring(0, pattern.length()-15) + "'"+ " OR w.word REGEXP '" + pattern.substring(0, pattern.length()-22) + "'";
+		else if(word.charAt(word.length()-2) == 'm')
+			sql = "SELECT word FROM word w WHERE w.word REGEXP '" + pattern + "' OR w.word REGEXP '" + pattern.substring(0, pattern.length()-7) + "'"+ " OR w.word REGEXP '" + pattern.substring(0, pattern.length()-22) + "'";
+		else	
+			sql = "SELECT word FROM word w WHERE w.word REGEXP '" + pattern + "' OR w.word REGEXP '" + pattern.substring(0, pattern.length()-7) + "'"+ " OR w.word REGEXP '" + pattern.substring(0, pattern.length()-14) + "'";
+
 		ResultSet rs = stmt.executeQuery(sql);
 		while(rs.next()){
 			if(rs.getString(1)!=null){
