@@ -101,8 +101,6 @@ public  class PreprocessorImpl implements Preprocessor {
 			
 			if(imgList.size() != 0)
 				GeneraImag(imgList, destination);
-			else
-				System.out.println("No se encontraron imágenes\n");
 				
 			
 			

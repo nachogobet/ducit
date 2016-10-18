@@ -254,5 +254,17 @@ public class DucitUtils {
 					return true;
 		}
 			return false;
+	}
+
+	public static String cleanWikiText(String text) {
+		int i;
+		text = text.replaceAll("</span>", "");
+		i = text.indexOf("<span ");
+		while(i != -1){
+			text = text.substring(0, i) + text.substring(i+26, text.length()-1);
+			i = text.indexOf("<span ");
+		}		
+		
+		return text;
 	}	
 }

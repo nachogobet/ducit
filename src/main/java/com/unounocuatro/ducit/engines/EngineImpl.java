@@ -76,10 +76,10 @@ public class EngineImpl implements Engine {
 	}
 
 	private void process() throws SQLException, Exception{
-		printPlainText(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[0], 0), 0));
-		printSynonymsAntonyms(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[1], 1), 1));
-		this.preprocessor.doPreprocessIMG(this.filePath, this.destination, this.actions[2]);
-		printWordMeanings(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[3], 3), 3));
+		//printPlainText(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[0], 0), 0));
+		//printSynonymsAntonyms(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[1], 1), 1));
+		//this.preprocessor.doPreprocessIMG(this.filePath, this.destination, this.actions[2]);
+		//printWordMeanings(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[3], 3), 3));
 		printDefinitions(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[4], 4), 4));
 	}
 	
@@ -90,8 +90,13 @@ public class EngineImpl implements Engine {
 	}
 
 	private void printDefinitions(String result) throws Exception {
-		if(result.length()>=3)
-			printWithProtocol(result, this.dao.getDefinition(DucitUtils.cleanText(result)), 5);
+		String[] array = DucitUtils.getStringArray(result);
+		for(int i=0; i< array.length; i++){
+			if(array[i].length()>2 && !array[i].matches(".*\\d.*")){
+				String word = this.dao.fixWord(DucitUtils.cleanText(array[i]));
+				printWithProtocol(word, this.dao.getDefinition(word), 5);
+			}			
+		}	
 	}
 	
 	private void printWithProtocol(String expression, String result, int functionality){

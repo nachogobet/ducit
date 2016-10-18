@@ -70,7 +70,7 @@ public class DucitDaoImpl implements DucitDAO{
 		}
 		
 
-		return sb.toString();
+		return DucitUtils.cleanWikiText(sb.toString());
 	}
 
 	public String getSynonyms(String word) throws SQLException {
