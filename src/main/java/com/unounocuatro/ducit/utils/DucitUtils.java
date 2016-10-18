@@ -32,28 +32,42 @@ public class DucitUtils {
 	
 	public static BufferedImage cleanThrash(BufferedImage image){
 		for(int i=0; i<image.getWidth(); i++){
-			boolean clean = false;
+			int whites = 0;
+			boolean allowed = true;
+			boolean cleaned = false;
 			for(int j=0; j<image.getHeight(); j++){
-				if(image.getRGB(i, j) != Color.WHITE.getRGB()){
-					clean = true;
+				if(image.getRGB(i, j) != Color.WHITE.getRGB() && allowed){
+					cleaned = true;
 					image.setRGB(i, j, Color.WHITE.getRGB());
-				} else if(clean){
-					break;
+				} else if(cleaned){
+					whites++;
+					allowed = false;
 				}
-					
+				if(whites>75){
+					cleaned = false;
+					whites = 0;
+					allowed = true;
+				}
 			}
 		}
 		
 		for(int i=0; i<image.getWidth(); i++){
-			boolean clean = false;
+			int whites = 0;
+			boolean allowed = true;
+			boolean cleaned = false;
 			for(int j=image.getHeight()-1; j>=0; j--){
-				if(image.getRGB(i, j) != Color.WHITE.getRGB()){
-					clean = true;
+				if(image.getRGB(i, j) != Color.WHITE.getRGB() && allowed){
+					cleaned = true;
 					image.setRGB(i, j, Color.WHITE.getRGB());
-				} else if(clean){
-					break;
+				} else if(cleaned){
+					whites++;
+					allowed = false;
 				}
-					
+				if(whites>75){
+					cleaned = false;
+					whites = 0;
+					allowed = true;
+				}
 			}
 		}
 		

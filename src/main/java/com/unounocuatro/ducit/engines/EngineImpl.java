@@ -57,7 +57,7 @@ public class EngineImpl implements Engine {
 		setProcessor();
 		setActions();
 		setBufferedImage(filePath);
-		//generatePreview();
+		generatePreview();
 		process();
 	}
 
@@ -76,7 +76,7 @@ public class EngineImpl implements Engine {
 
 	private void generatePreview() throws IOException {
 		File outputfile = new File("./src/main/resources/images/preview.jpg");
-		ImageIO.write(this.preprocessor.doPreprocess(this.filePath, ColorScalar.ORANGE, 4), "jpg", outputfile);	
+		ImageIO.write(this.preprocessor.doPreprocess(this.filePath, ColorScalar.BLUE, 3), "jpg", outputfile);	
 	}
 
 	private void process() throws SQLException, Exception{
