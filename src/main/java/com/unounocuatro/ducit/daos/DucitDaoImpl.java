@@ -107,7 +107,6 @@ public class DucitDaoImpl implements DucitDAO{
 	}
 
 	public String fixWord(String word) throws SQLException {
-		// ESTE CODIGO DUCIT FUE CREADO POR EL PROJECT MANAGER y EL FOUNDER
 		int min = Integer.MAX_VALUE;
 		String correct = new String(word);
 		Statement stmt = conn.createStatement();
