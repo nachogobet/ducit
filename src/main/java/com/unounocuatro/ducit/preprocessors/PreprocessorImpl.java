@@ -55,13 +55,13 @@ public  class PreprocessorImpl implements Preprocessor {
 		case(0):
 			return DucitUtils.mat2Img(gauss);
 		case(1):
-			return DucitUtils.mat2Img(adapt);
+			return DucitUtils.cleanThrash(DucitUtils.mat2Img(adapt));
 		case(2):
 			return DucitUtils.mat2Img(gauss);
 		case(3):
-			return DucitUtils.mat2Img(adapt);
+			return DucitUtils.cleanThrash(DucitUtils.mat2Img(adapt));
 		case(4):
-			return DucitUtils.mat2Img(adapt);
+			return DucitUtils.cleanThrash(DucitUtils.mat2Img(adapt));
 		}
 
 		System.out.println("estas mandando functionality mal");
