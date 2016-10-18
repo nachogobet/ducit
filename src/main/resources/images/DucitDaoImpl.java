@@ -16,19 +16,15 @@ import com.google.gson.JsonParser;
 import com.unounocuatro.ducit.utils.DucitUtils;
 
 public class DucitDaoImpl implements DucitDAO{
-	
-	public DucitDaoImpl(Connection conn){
-		this.conn = conn;
-	}
-	
-	private Connection conn;
 
-	
+	private static final String DB_URL = "jdbc:mysql://localhost:3306/ducit";
 
 	//  Database credentials
-	
+	private static final String USER = "root";
+	private static final String PASS = "weblogic1";
 
 	public String getWordMeaning(String word) throws SQLException {
+		Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
 		Statement stmt = conn.createStatement();
 		String sql;
 		sql = "SELECT meaning FROM word w WHERE w.word LIKE '" + word + "'";
@@ -78,38 +74,36 @@ public class DucitDaoImpl implements DucitDAO{
 	}
 
 	public String getSynonyms(String word) throws SQLException {
-		String result = "";
+		Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
 		Statement stmt = conn.createStatement();
 		String sql;
 		sql = "SELECT Synonym FROM word w WHERE w.word LIKE '" + word + "'";
 		ResultSet rs = stmt.executeQuery(sql);
 
-		if(rs.next()){
-			result = rs.getString(1);
-			if(result== null || result.equals("null") || result.isEmpty())
-				return "";
-		}
-		return result.replace("|", "-");
+		if(rs.next() && rs.getString(1)!= null && !rs.getString(1).isEmpty())
+			return rs.getString(1).replace("|", "-");
+		else
+			return "";
 	}
 	
 	public String getAntonyms(String word) throws SQLException {
-		String result = "";
+		Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
 		Statement stmt = conn.createStatement();
 		String sql;
 		sql = "SELECT antonym FROM word w WHERE w.word LIKE '" + word + "'";
 		ResultSet rs = stmt.executeQuery(sql);
-		if(rs.next()){
-			result = rs.getString(1);
-			if(result== null || result.equals("null") || result.isEmpty())
-				return "";
-		}
-		return result.replace("|", "-");
+		
+		if(rs.next() && rs.getString(1)!= null && rs.getString(1)!= "null" && !rs.getString(1).isEmpty())
+			return rs.getString(1).replace("|", "-");
+		else
+			return "no hay sinonimos para esta palabra";
 	}
 
 	public String fixWord(String word) throws SQLException {
 		// ESTE CODIGO DUCIT FUE CREADO POR EL PROJECT MANAGER y EL FOUNDER
 		int min = Integer.MAX_VALUE;
 		String correct = new String(word);
+		Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
 		Statement stmt = conn.createStatement();
 		String pattern = DucitUtils.getSQLPattern(word);
 		String sql;

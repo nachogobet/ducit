@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -21,7 +23,9 @@ import com.unounocuatro.ducit.utils.DucitUtils;
 
 public class EngineImpl implements Engine {
 	
-	DucitDAO dao = new DucitDaoImpl();
+	private static final String USER = "root";
+	private static final String PASS = "weblogic1";
+	private static final String DB_URL = "jdbc:mysql://localhost:3306/ducit";
 
 	private BufferedImage image;
 
@@ -36,13 +40,15 @@ public class EngineImpl implements Engine {
 	private String filePath;
 	
 	private String destination;
+	private DucitDaoImpl dao;
 
 	private static EngineImpl engine = null;
 
-	private EngineImpl(){		
+	private EngineImpl() throws SQLException{	
+		this.dao = new DucitDaoImpl(DriverManager.getConnection(DB_URL,USER,PASS));
 	}
 
-	public static Engine getInstance(){
+	public static Engine getInstance() throws SQLException{
 		return (engine==null)? new EngineImpl() : engine;
 	}
 
