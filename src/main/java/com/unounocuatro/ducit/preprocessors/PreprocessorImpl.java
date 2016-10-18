@@ -1,7 +1,6 @@
 package com.unounocuatro.ducit.preprocessors;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +37,8 @@ public  class PreprocessorImpl implements Preprocessor {
 		Imgproc.GaussianBlur(marcado, gauss, new Size(3,3), 0);
 		Imgproc.adaptiveThreshold(gauss, adapt, 255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY,15, 4);
 
-		
-		switch(functionality){
+		//no borrar todavia, version vieja con clean lines
+		/*switch(functionality){
 		case(0):
 			return DucitUtils.mat2Img(gauss);
 		case(1):
@@ -50,6 +49,19 @@ public  class PreprocessorImpl implements Preprocessor {
 			return DucitUtils.cleanLines(DucitUtils.mat2Img(adapt));
 		case(4):
 			return DucitUtils.cleanLines(DucitUtils.mat2Img(adapt));
+		}*/
+		
+		switch(functionality){
+		case(0):
+			return DucitUtils.mat2Img(gauss);
+		case(1):
+			return DucitUtils.cleanThrash(DucitUtils.mat2Img(adapt));
+		case(2):
+			return DucitUtils.mat2Img(gauss);
+		case(3):
+			return DucitUtils.cleanThrash(DucitUtils.mat2Img(adapt));
+		case(4):
+			return DucitUtils.cleanThrash(DucitUtils.mat2Img(adapt));
 		}
 
 		System.out.println("estas mandando functionality mal");

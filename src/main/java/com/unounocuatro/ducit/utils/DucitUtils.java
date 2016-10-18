@@ -29,6 +29,36 @@ public class DucitUtils {
 		
 		return gray;
     }
+	
+	public static BufferedImage cleanThrash(BufferedImage image){
+		for(int i=0; i<image.getWidth(); i++){
+			boolean clean = false;
+			for(int j=0; j<image.getHeight(); j++){
+				if(image.getRGB(i, j) != Color.WHITE.getRGB()){
+					clean = true;
+					image.setRGB(i, j, Color.WHITE.getRGB());
+				} else if(clean){
+					break;
+				}
+					
+			}
+		}
+		
+		for(int i=0; i<image.getWidth(); i++){
+			boolean clean = false;
+			for(int j=image.getHeight()-1; j>=0; j--){
+				if(image.getRGB(i, j) != Color.WHITE.getRGB()){
+					clean = true;
+					image.setRGB(i, j, Color.WHITE.getRGB());
+				} else if(clean){
+					break;
+				}
+					
+			}
+		}
+		
+		return image;
+	}
 
 	public static BufferedImage cleanLines(BufferedImage image) {
 		boolean line=true;

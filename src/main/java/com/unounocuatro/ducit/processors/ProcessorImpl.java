@@ -20,6 +20,8 @@ public class ProcessorImpl implements Processor {
 
 	public String doProcess(BufferedImage image, int functionality) throws Exception {
 		setOCRConfig();
+		if(image == null)
+			return "";
 		return DucitUtils.cleanText(instance.doOCR(image).replaceAll("(?m)^[ \t]*\r?\n", ""));
 	}
 

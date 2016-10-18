@@ -5,14 +5,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 
-import com.unounocuatro.ducit.daos.DucitDAO;
 import com.unounocuatro.ducit.daos.DucitDaoImpl;
 import com.unounocuatro.ducit.preprocessors.Preprocessor;
 import com.unounocuatro.ducit.preprocessors.PreprocessorImpl;
@@ -78,7 +76,7 @@ public class EngineImpl implements Engine {
 
 	private void generatePreview() throws IOException {
 		File outputfile = new File("./src/main/resources/images/preview.jpg");
-		ImageIO.write(this.preprocessor.doPreprocess(this.filePath, ColorScalar.ORANGE, 0), "jpg", outputfile);	
+		ImageIO.write(this.preprocessor.doPreprocess(this.filePath, ColorScalar.ORANGE, 4), "jpg", outputfile);	
 	}
 
 	private void process() throws SQLException, Exception{
