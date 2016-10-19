@@ -43,7 +43,7 @@ public class DucitUtils {
 					whites++;
 					allowed = false;
 				}
-				if(whites>75){
+				if(whites>100){
 					cleaned = false;
 					whites = 0;
 					allowed = true;
@@ -63,7 +63,7 @@ public class DucitUtils {
 					whites++;
 					allowed = false;
 				}
-				if(whites>75){
+				if(whites>100){
 					cleaned = false;
 					whites = 0;
 					allowed = true;
