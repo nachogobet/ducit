@@ -57,7 +57,7 @@ public class EngineImpl implements Engine {
 		setProcessor();
 		setActions();
 		setBufferedImage(filePath);
-		generatePreview();
+		//generatePreview();
 		process();
 	}
 
