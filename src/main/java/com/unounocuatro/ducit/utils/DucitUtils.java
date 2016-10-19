@@ -30,7 +30,7 @@ public class DucitUtils {
 		return gray;
     }
 	
-	public static BufferedImage cleanThrash(BufferedImage image){
+	public static BufferedImage cleanTrash(BufferedImage image){
 		for(int i=0; i<image.getWidth(); i++){
 			int whites = 0;
 			boolean allowed = true;
