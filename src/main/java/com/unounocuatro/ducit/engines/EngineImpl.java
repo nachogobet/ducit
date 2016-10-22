@@ -7,9 +7,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
+
+import org.opencv.core.Mat;
 
 import com.unounocuatro.ducit.daos.DucitDaoImpl;
 import com.unounocuatro.ducit.preprocessors.Preprocessor;
@@ -57,7 +60,7 @@ public class EngineImpl implements Engine {
 		setProcessor();
 		setActions();
 		setBufferedImage(filePath);
-		generatePreview();
+		//generatePreview();
 		process();
 	}
 
@@ -80,17 +83,22 @@ public class EngineImpl implements Engine {
 	}
 
 	private void process() throws SQLException, Exception{
-		printPlainText(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[0], 0), 0));
+		printPlainText(this.preprocessor.doPreprocessIMG(this.filePath, this.destination, this.actions[0], false));
 		printSynonymsAntonyms(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[1], 1), 1));
-		this.preprocessor.doPreprocessIMG(this.filePath, this.destination, this.actions[2]);
+		this.preprocessor.doPreprocessIMG(this.filePath, this.destination, this.actions[2], true);
 		printWordMeanings(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[3], 3), 3));
 		printDefinitions(this.processor.doProcess(this.preprocessor.doPreprocess(this.filePath, this.actions[4], 4), 4));
 	}
 	
-	private void printPlainText(String result) throws Exception {
-		result = DucitUtils.cleanPlainText(DucitUtils.cleanText(result));
-		if(result.length() > 5)
-			printWithProtocol("plano", result, 1);
+	private void printPlainText(List<Mat> result) throws Exception {
+		String text = "";
+		for(int i=result.size()-1; i>=0; i--){
+			text += this.processor.doProcess(DucitUtils.mat2Img(result.get(i)), 0);
+			text += System.getProperty("line.separator");
+		}
+		text = DucitUtils.cleanPlainText(DucitUtils.cleanText(text));
+		if(text.length() > 5)
+			printWithProtocol("plano", text, 1);
 	}
 
 	private void printDefinitions(String result) throws Exception {

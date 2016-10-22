@@ -68,7 +68,7 @@ public  class PreprocessorImpl implements Preprocessor {
 		return null;
 	}
 
-	public void doPreprocessIMG(String path, String destination, ColorScalar scalar) {
+	public List<Mat> doPreprocessIMG(String path, String destination, ColorScalar scalar, boolean color) {
 		
 			System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 			Mat imgProc = new Mat();
@@ -112,11 +112,11 @@ public  class PreprocessorImpl implements Preprocessor {
 
 			
 			if(imgList.size() != 0)
-				GeneraImag(imgList, destination);
+				GeneraImag(imgList, destination,color);
 				
 			
 			
-						
+					return imgList;
 		}
 			
 
@@ -273,10 +273,11 @@ public  class PreprocessorImpl implements Preprocessor {
 
 	//función que genera los output de las imagenes procesadas
 
-	private void GeneraImag(List<Mat> M, String destination)
+	private void GeneraImag(List<Mat> M, String destination, boolean c)
 	{
 		for(int i=0;i<M.size();i++)
 			{
+				Imgproc.cvtColor(M.get(i), M.get(i), Imgproc.COLOR_BGR2GRAY);	
 				Imgcodecs.imwrite("C:/ducit/generadas/IMG_N" + (i+1) + ".jpg", M.get(i));
 			}
 		
