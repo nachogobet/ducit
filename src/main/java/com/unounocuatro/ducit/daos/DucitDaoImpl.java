@@ -106,6 +106,9 @@ public class DucitDaoImpl implements DucitDAO{
 	}
 
 	public String fixWord(String word) throws SQLException {
+		if(word.length() < 2)
+			return word;
+			
 		int min = Integer.MAX_VALUE;
 		String correct = new String(word);
 		Statement stmt = conn.createStatement();

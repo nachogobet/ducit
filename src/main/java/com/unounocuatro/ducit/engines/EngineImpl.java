@@ -57,7 +57,7 @@ public class EngineImpl implements Engine {
 		setProcessor();
 		setActions();
 		setBufferedImage(filePath);
-		//generatePreview();
+		generatePreview();
 		process();
 	}
 
@@ -76,7 +76,7 @@ public class EngineImpl implements Engine {
 
 	private void generatePreview() throws IOException {
 		File outputfile = new File("./src/main/resources/images/preview.jpg");
-		ImageIO.write(this.preprocessor.doPreprocess(this.filePath, ColorScalar.PINK, 1), "jpg", outputfile);	
+		ImageIO.write(this.preprocessor.doPreprocess(this.filePath, ColorScalar.YELLOW, 4), "jpg", outputfile);	
 	}
 
 	private void process() throws SQLException, Exception{
@@ -88,7 +88,7 @@ public class EngineImpl implements Engine {
 	}
 	
 	private void printPlainText(String result) throws Exception {
-		result = DucitUtils.cleanPlainText(result);
+		result = DucitUtils.cleanPlainText(DucitUtils.cleanText(result));
 		if(result.length() > 5)
 			printWithProtocol("plano", result, 1);
 	}
@@ -96,7 +96,7 @@ public class EngineImpl implements Engine {
 	private void printDefinitions(String result) throws Exception {
 		String[] array = DucitUtils.getStringArray(result);
 		for(int i=0; i< array.length; i++){
-			if(array[i].length()>2 && !array[i].matches(".*\\d.*")){
+			if(array[i].length()>2){
 				String word = this.dao.fixWord(DucitUtils.cleanText(array[i]));
 				printWithProtocol(word, this.dao.getDefinition(word), 5);
 			}			
@@ -115,7 +115,7 @@ public class EngineImpl implements Engine {
 	private void printWordMeanings(String result) throws SQLException {
 		String[] array = DucitUtils.getStringArray(result);
 		for(int i=0; i< array.length; i++){
-			if(array[i].length()>2 && !array[i].matches(".*\\d.*")){
+			if(array[i].length()>2){
 				String word = this.dao.fixWord(DucitUtils.cleanText(array[i]));
 				printWithProtocol(word, this.dao.getWordMeaning(word), 4);
 			}			
@@ -125,7 +125,7 @@ public class EngineImpl implements Engine {
 	private void printSynonymsAntonyms(String result) throws SQLException {		
 		String[] array = DucitUtils.getStringArray(result);
 		for(int i=0; i< array.length; i++){
-			if(array[i].length()>2 && !array[i].matches(".*\\d.*")){
+			if(array[i].length()>2){
 				String word = this.dao.fixWord(DucitUtils.cleanText(array[i]));
 				printWithProtocol(word, this.dao.getSynonyms(word) + "%" + this.dao.getAntonyms(word), 2);
 			}			

@@ -43,7 +43,7 @@ public class DucitUtils {
 					whites++;
 					allowed = false;
 				}
-				if(whites>100){
+				if(whites>135){
 					cleaned = false;
 					whites = 0;
 					allowed = true;
@@ -63,7 +63,7 @@ public class DucitUtils {
 					whites++;
 					allowed = false;
 				}
-				if(whites>100){
+				if(whites>135){
 					cleaned = false;
 					whites = 0;
 					allowed = true;
@@ -118,13 +118,32 @@ public class DucitUtils {
 		return words;
 	}
 
-	public static String cleanText(String text) {
+	public static String cleanText(String text) {	
+		
+
+		if(text.length()>2){
+			if(Character.isDigit(text.charAt(0)))
+				text = text.substring(1, text.length());
+			if(Character.isDigit(text.charAt(text.length()-1)))
+				text = text.substring(0, text.length()-1);
+			for(int i=1; i<text.length()-1; i++){
+				if(Character.isLetter(text.charAt(i-1)) && Character.isLetter(text.charAt(i+1)) && text.charAt(i) == '¡')
+						text = text.substring(0, i) + 'i' + text.substring(i+1,text.length());
+				/*if(Character.isDigit(text.charAt(i-1)))
+						text = text.substring(0, i-1) + text.substring(i,text.length());
+				if(Character.isDigit(text.charAt(i+1)))
+						text = text.substring(0, i) + text.substring(i+1,text.length());*/
+			}
+		}
 		text = text.replaceAll("_","");
 		text = text.replaceAll("^\\s+", "");
 		text = text.replaceAll("\\s+$", "");
 		text = text.replaceAll("á", "a").replaceAll("é", "e").replaceAll("í", "i").replaceAll("ó", "o").replaceAll("ú", "u");
 		
+		
+		
 		return text;
+		
 	}
 
 	public static String getSQLPattern(String word) {
@@ -229,6 +248,7 @@ public class DucitUtils {
 				if(isBadChar(textArray[i].charAt(j), textArray[i].charAt(j-1), textArray[i].charAt(j+1)))
 					errors++;							
 			}
+
 			if((float)errors/size > 0.1)
 				textArray[i] = "El segmento en esta posición fue detectado defectuosamente.";	
 		}
@@ -246,6 +266,12 @@ public class DucitUtils {
 	}
 
 	private static boolean isBadChar(char actual, char previous, char next) {
+		if (Character.isDigit(actual)){
+			if(Character.isLetter(previous)||Character.isLetter(next)){
+				return true;
+			}
+		}
+			
 		switch(actual){
 			case '°':
 				return true;
@@ -298,7 +324,7 @@ public class DucitUtils {
 			case '¿':
 				if (Character.isLetter(previous) || !Character.isLetter(next))
 					return true;
-		}
+			}
 			return false;
 	}
 
@@ -307,7 +333,8 @@ public class DucitUtils {
 		text = text.replaceAll("</span>", "");
 		i = text.indexOf("<span ");
 		while(i != -1){
-			text = text.substring(0, i) + text.substring(i+26, text.length()-1);
+			if(i<text.length()-26)
+				text = text.substring(0, i) + text.substring(i+26, text.length()-1);
 			i = text.indexOf("<span ");
 		}		
 		
