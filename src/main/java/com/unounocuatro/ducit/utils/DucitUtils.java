@@ -353,10 +353,12 @@ public class DucitUtils {
 	}
 
 	public static String cleanWikiText(String text) {
+		if(text.isEmpty())
+			return text;
 		int i;
 		text = text.replaceAll("</span>", "");
 		i = text.indexOf("<span ");
-		while(i != -1){
+		while(i != -1 && i < text.length()-26){
 			if(i<text.length()-26)
 				text = text.substring(0, i) + text.substring(i+26, text.length()-1);
 			i = text.indexOf("<span ");

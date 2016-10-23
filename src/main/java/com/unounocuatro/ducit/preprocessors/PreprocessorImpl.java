@@ -259,7 +259,10 @@ public  class PreprocessorImpl implements Preprocessor {
 				if(c)
 					Imgcodecs.imwrite("C:/ducit/generadas/IMG_N" + (i+1) + ".jpg", M.get(i));
 				else
-					Imgproc.cvtColor(M.get(i), M.get(i), Imgproc.COLOR_BGR2GRAY);	
+					{
+					Imgproc.cvtColor(M.get(i), M.get(i), Imgproc.COLOR_BGR2GRAY);
+					Imgcodecs.imwrite("C:/ducit/generadas/procesada" + (i+1) + ".jpg", M.get(i));
+					}
 				
 			}
 		
