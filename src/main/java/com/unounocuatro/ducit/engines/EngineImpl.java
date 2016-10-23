@@ -25,7 +25,7 @@ import com.unounocuatro.ducit.utils.DucitUtils;
 public class EngineImpl implements Engine {
 	
 	private static final String USER = "root";
-	private static final String PASS = "weblogic1";
+	private static final String PASS = "lunita2010";
 	private static final String DB_URL = "jdbc:mysql://localhost:3306/ducit";
 
 	private BufferedImage image;
