@@ -11,7 +11,6 @@ import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
-import org.opencv.core.RotatedRect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -103,20 +102,24 @@ public  class PreprocessorImpl implements Preprocessor {
 			
 			//dibujamos los contornos
 			
-			if(color)
-				{
-					DibujarContorno(dibujo, contorno, curvaAprox, distAprox, jerarquia,imgFuente, imgFinal, imgList);
-					
-				}
-			else
-				{	
-					
-					imgList.add(DibujarContornoOCR(dibujo, contorno, curvaAprox, distAprox, jerarquia,imgFuente, imgFinal));
-				}
+			
+			DibujarContorno(dibujo, contorno, curvaAprox, distAprox, jerarquia,imgFuente, imgFinal, imgList,color);
+		
+				
+			
+			
+			
+			
+
+			//imgList=ValidaImag(imgList);
+
 			
 			if(imgList.size() != 0)
 				GeneraImag(imgList, destination,color);
-			return imgList;
+				
+			
+			
+					return imgList;
 		}
 			
 
@@ -169,7 +172,7 @@ public  class PreprocessorImpl implements Preprocessor {
 		return ca;
 	}
 
-	private void DibujarContorno(Mat d, List<MatOfPoint> c, MatOfPoint2f cap, double dis, Mat jer, Mat ifuente, Mat ifin, List<Mat> ilist)
+	private void DibujarContorno(Mat d, List<MatOfPoint> c, MatOfPoint2f cap, double dis, Mat jer, Mat ifuente, Mat ifin, List<Mat> ilist,boolean clr)
 	{
 		double[] area = new double[c.size()];
 			
@@ -182,6 +185,20 @@ public  class PreprocessorImpl implements Preprocessor {
 			
 		
 		int xInicial = 0,xFinal = 0,yInicial = 0,yFinal = 0, cont = 0;
+		int areaIMG;
+		int limX, limY;
+		if(clr)
+			{
+				areaIMG = 10000;
+				limX = 150;
+				limY = 150;
+			}
+		else
+			{
+				areaIMG = 1000;
+				limX = 25;
+				limY = 25;
+			}
 		for(int j=0; j<area.length;j++)
 			{	
 				Imgproc.drawContours(d, c, j, new Scalar(0,255,255), 2, 8, jer, 0, new Point());
@@ -197,7 +214,7 @@ public  class PreprocessorImpl implements Preprocessor {
 					
 				//veo de quedarme solo con los contornos externos de una misma imagen
 
-				if(area[j]>10000)	
+				if(area[j]>areaIMG)	
 				{	
 					
 					Imgproc.rectangle(d, new Point(recta.x, recta.y), new Point(recta.x + recta.width, recta.y + (recta.height)), new Scalar(255,0,0));
@@ -205,12 +222,12 @@ public  class PreprocessorImpl implements Preprocessor {
 					if(cont>0)
 						{	
 						
-							if((yInicial - recta.y) >=150 || (recta.x - xFinal) >= 150)
+							if((yInicial - recta.y) >=limY || (recta.x - xFinal) >= limX)
 								{
 									ilist.add(ifin);
 								}
 						
-						
+		
 						}
 					else
 						{
@@ -231,77 +248,7 @@ public  class PreprocessorImpl implements Preprocessor {
 		
 	}
 
-	private Mat DibujarContornoOCR(Mat d, List<MatOfPoint> c, MatOfPoint2f cap, double dis, Mat jer, Mat ifuente, Mat ifin)
-	{
-		double[] area = new double[c.size()];
-			
 
-		for(int i=0; i<c.size();i++)
-		{	
-			area[i]=Imgproc.contourArea(c.get(i));
-			
-		}
-			
-		
-		int xInicial = 0,xFinal = 0,yInicial = 0,yFinal = 0, cont = 0;
-		
-		Mat imgAux = ifuente.clone();
-		Mat imgOrig = ifuente.clone();
-		Mat imgBuff= new Mat();
-		Mat canny2 = new Mat();
-		List<MatOfPoint> contorno2 = new ArrayList<MatOfPoint>();
-		Mat jerarquia2 = new Mat();
-		
-		for(int j=0; j<area.length;j++)
-			{	
-				Imgproc.drawContours(d, c, j, new Scalar(0,255,255), Core.FILLED, 8, jer, 0, new Point());
-				MatOfPoint2f contorno2f = new MatOfPoint2f(c.get(j).toArray());
-				dis = Imgproc.arcLength(contorno2f, true)*0.02;
-				Imgproc.approxPolyDP(contorno2f, cap, dis, true);
-				MatOfPoint puntos = new MatOfPoint(contorno2f.toArray());
-				RotatedRect rotado = Imgproc.minAreaRect(contorno2f);
-				Point[] puntos2 = new Point[4];
-				
-				
-					
-				//unimos los limites de las rectas
-					
-				//Rect recta = Imgproc.boundingRect(puntos);
-				rotado.points(puntos2);
-				Rect recta2 = new Rect(puntos2[0],puntos2[2]);
-				
-				
-				 
-				
-			
-				//veo de quedarme solo con los contornos externos de una misma imagen
-
-				if(area[j]>10000)	
-				{	
-					
-				
-					ifin=ifuente.submat(recta2.y, recta2.y + recta2.height, recta2.x, recta2.x + recta2.width);
-					Imgproc.line(imgAux, puntos2[0], puntos2[1], new Scalar(255,255,0));
-					Imgproc.line(imgAux, puntos2[0], puntos2[3], new Scalar(255,255,0));
-					Imgproc.line(imgAux, puntos2[1], puntos2[2], new Scalar(255,255,0));
-					Imgproc.line(imgAux, puntos2[2], puntos2[3], new Scalar(255,255,0));
-					
-				}
-				
-				
-			}
-		Core.inRange(imgAux, new Scalar(255,255,0), new Scalar(255,255,0), imgBuff);
-		canny2 = BuscarContorno(imgBuff,contorno2,jerarquia2);
-		for(int i=0;i<contorno2.size();i++)
-			Imgproc.drawContours(imgAux, contorno2, i, new Scalar(0,255,255), Core.FILLED, 8, jerarquia2, 0, new Point());
-		
-		Imgproc.cvtColor(imgOrig, imgOrig, Imgproc.COLOR_BGR2GRAY);
-		Imgproc.cvtColor(imgAux, imgAux, Imgproc.COLOR_BGR2GRAY);
-		
-		Core.absdiff(imgAux, imgOrig, imgBuff);
-		Core.bitwise_not(imgBuff, imgBuff);
-		return imgBuff;
-	}
 
 	//función que genera los output de las imagenes procesadas
 
@@ -312,9 +259,7 @@ public  class PreprocessorImpl implements Preprocessor {
 				if(c)
 					Imgcodecs.imwrite("C:/ducit/generadas/IMG_N" + (i+1) + ".jpg", M.get(i));
 				else
-					Imgcodecs.imwrite("C:/Procesada" + (i+1) + ".jpg", M.get(i));
-					
-				
+					Imgproc.cvtColor(M.get(i), M.get(i), Imgproc.COLOR_BGR2GRAY);	
 				
 			}
 		
@@ -322,11 +267,3 @@ public  class PreprocessorImpl implements Preprocessor {
 
 		
 	}
-
-
-
-
-
-
-
-

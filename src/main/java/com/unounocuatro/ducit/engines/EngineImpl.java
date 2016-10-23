@@ -25,7 +25,7 @@ import com.unounocuatro.ducit.utils.DucitUtils;
 public class EngineImpl implements Engine {
 	
 	private static final String USER = "root";
-	private static final String PASS = "lunita2010";
+	private static final String PASS = "weblogic1";
 	private static final String DB_URL = "jdbc:mysql://localhost:3306/ducit";
 
 	private BufferedImage image;
@@ -69,8 +69,8 @@ public class EngineImpl implements Engine {
 
 	private void setActions() throws FileNotFoundException {
 		@SuppressWarnings("resource")
-		Scanner in = new Scanner(new FileReader(this.config));
-		//Scanner in = new Scanner(new FileReader("C:/ducit/config.txt"));
+		//Scanner in = new Scanner(new FileReader(this.config));
+		Scanner in = new Scanner(new FileReader("C:/ducit/config.txt"));
 		int index;
 		int color;
 		for(int i=0; i<5; i++){
@@ -82,7 +82,7 @@ public class EngineImpl implements Engine {
 
 	private void generatePreview() throws IOException {
 		File outputfile = new File("./src/main/resources/images/preview.jpg");
-		ImageIO.write(this.preprocessor.doPreprocess(this.filePath, ColorScalar.YELLOW, 4), "jpg", outputfile);	
+		ImageIO.write(this.preprocessor.doPreprocess(this.filePath, ColorScalar.YELLOW, 0), "jpg", outputfile);	
 	}
 
 	private void process() throws SQLException, Exception{
