@@ -82,7 +82,7 @@ public class EngineImpl implements Engine {
 
 	private void generatePreview() throws IOException {
 		File outputfile = new File("./src/main/resources/images/preview.jpg");
-		ImageIO.write(this.preprocessor.doPreprocess(this.filePath, ColorScalar.BLUE, 4), "jpg", outputfile);	
+		ImageIO.write(this.preprocessor.doPreprocess(this.filePath, ColorScalar.VIOLET, 4), "jpg", outputfile);	
 	}
 
 	private void process() throws SQLException, Exception{
