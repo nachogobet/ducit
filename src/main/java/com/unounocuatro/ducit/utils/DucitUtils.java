@@ -258,7 +258,7 @@ public class DucitUtils {
 			}
 		}
 		
-		if((float)badSegments/textArray.length > 0.000003)
+		if((float)badSegments/textArray.length > 0.3)
 			return "ERROR: Baja calidad de imagen.";
 
 		return getTextFromString(textArray);
