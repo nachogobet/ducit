@@ -42,6 +42,7 @@ public class EngineImpl implements Engine {
 	
 	private String destination;
 	private DucitDaoImpl dao;
+	private String config;
 
 	private static EngineImpl engine = null;
 
@@ -53,7 +54,8 @@ public class EngineImpl implements Engine {
 		return (engine==null)? new EngineImpl() : engine;
 	}
 
-	public void scan(String filePath, String destination) throws Exception {
+	public void scan(String filePath, String destination, String config) throws Exception {
+		this.config = config;
 		this.filePath = filePath;
 		this.destination = destination;
 		setPreprocessor();
@@ -67,7 +69,8 @@ public class EngineImpl implements Engine {
 
 	private void setActions() throws FileNotFoundException {
 		@SuppressWarnings("resource")
-		Scanner in = new Scanner(new FileReader("C:/ducit/config.txt"));
+		Scanner in = new Scanner(new FileReader(this.config));
+		//Scanner in = new Scanner(new FileReader("C:/ducit/config.txt"));
 		int index;
 		int color;
 		for(int i=0; i<5; i++){
@@ -97,8 +100,16 @@ public class EngineImpl implements Engine {
 			text += System.getProperty("line.separator");
 		}
 		text = DucitUtils.cleanPlainText(DucitUtils.cleanText(text));
+		
+			
+		if(text.equals("ERROR: Baja calidad de imagen.")){
+			printWithProtocol("error", text, 11);
+			System.exit(1);
+		}
+			
 		if(text.length() > 5)
 			printWithProtocol("plano", text, 1);
+		
 	}
 
 	private void printDefinitions(String result) throws Exception {

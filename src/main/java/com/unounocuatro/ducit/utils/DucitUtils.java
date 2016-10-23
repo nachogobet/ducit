@@ -237,6 +237,7 @@ public class DucitUtils {
 	}
 
 	public static String cleanPlainText(String result) {
+		int badSegments = 0;
 		if(result == null)
 			return "";
 		String textArray[] = result.split("\\r\\n|\\n|\\r");
@@ -251,9 +252,14 @@ public class DucitUtils {
 					errors++;
 			}
 
-			if((float)errors/size > 0.1)
-				textArray[i] = "El segmento en esta posición fue detectado defectuosamente.";	
+			if((float)errors/size > 0.1){
+				textArray[i] = "El segmento en esta posición fue detectado defectuosamente.";
+				badSegments ++;
+			}
 		}
+		
+		if((float)badSegments/textArray.length > 0.000003)
+			return "ERROR: Baja calidad de imagen.";
 
 		return getTextFromString(textArray);
 	}
@@ -311,11 +317,13 @@ public class DucitUtils {
 		case '.':
 			if (previous == '.' && Character.isLetter(next))
 				return true;
-			if (previous == ' ' && next == '.')
+			else if (previous == ' ' && next == '.')
 				return true;
-			if (previous == '¡' || next == '¡')
+			else if (previous == '¡' || next == '¡')
 				return true;
-			if (previous == '-' ||next == '-')
+			else if (previous == '-' || next == '-')
+				return true;
+			else if (previous == '.' && next == ' ')
 				return true;
 		case '#':
 			return true;
@@ -337,6 +345,9 @@ public class DucitUtils {
 				return true;
 		case '—':
 			return true;
+		case '$':
+			if(Character.isLetter(previous) && Character.isLetter(next))
+				return true;
 		}
 		return false;
 	}
