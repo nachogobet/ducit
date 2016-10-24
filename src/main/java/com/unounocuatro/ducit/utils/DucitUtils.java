@@ -231,7 +231,6 @@ public class DucitUtils {
 	}
 
 	public static String cleanPlainText(String result) {
-		int badSegments = 0;
 		if(result == null)
 			return "";
 		String textArray[] = result.split("\\r\\n|\\n|\\r");
@@ -246,15 +245,10 @@ public class DucitUtils {
 					errors++;
 			}
 
-			if((float)errors/size > 0.1){
-				textArray[i] = "El segmento en esta posición fue detectado defectuosamente.";
-				badSegments ++;
-			}
+			if((float)errors/size > 0.1)
+				textArray[i] = "El segmento en esta posición fue detectado defectuosamente.";	
 		}
-		
-		/*if((float)badSegments/textArray.length > 0.3)
-			return "ERROR: Baja calidad de imagen.";
-*/
+
 		return getTextFromString(textArray);
 	}
 
