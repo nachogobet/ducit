@@ -263,9 +263,8 @@ public class DucitUtils {
 
 	private static boolean isBadChar(char actual, char previous, char next) {
 		if (Character.isDigit(actual)){
-			if(Character.isLetter(previous)||Character.isLetter(next)){
+			if(Character.isLetter(previous)||Character.isLetter(next))
 				return true;
-			}
 		}
 
 		switch(actual){
