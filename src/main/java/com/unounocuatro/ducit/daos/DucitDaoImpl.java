@@ -15,17 +15,17 @@ import com.google.gson.JsonParser;
 import com.unounocuatro.ducit.utils.DucitUtils;
 
 public class DucitDaoImpl implements DucitDAO{
-	
+
 	public DucitDaoImpl(Connection conn){
 		this.conn = conn;
 	}
-	
+
 	private Connection conn;
 
-	
+
 
 	//  Database credentials
-	
+
 
 	public String getWordMeaning(String word) throws SQLException {
 		Statement stmt = conn.createStatement();
@@ -37,30 +37,30 @@ public class DucitDaoImpl implements DucitDAO{
 		while(rs.next()){
 			result += rs.getString(1) + "%";
 		}
-		
+
 		return result;
 	}
 
-	public String getDefinition(String word) throws Exception {
+	public String getDefinition(String word) {
 		int i=0;
-		URL url = new URL("https://es.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + word.replaceAll("(\\r|\\n)", "").replace(" ", "%20") + "&format=json");
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		conn.setRequestMethod("GET");
-		conn.setRequestProperty("Accept", "application/json");
-
-
-		BufferedReader br = new BufferedReader(new InputStreamReader(
-				(conn.getInputStream())));
-
-		StringBuilder sb = new StringBuilder();
-
-		String line;
-		while ((line = br.readLine()) != null) sb.append(line);
-			
-		JsonElement jelement = new JsonParser().parse(sb.toString());
-		JsonObject  jobject = jelement.getAsJsonObject();
-		sb.setLength(0);
 		try{
+			URL url = new URL("https://es.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + word.replaceAll("(\\r|\\n)", "").replace(" ", "%20") + "&format=json");
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setRequestProperty("Accept", "application/json");
+
+
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					(conn.getInputStream())));
+
+			StringBuilder sb = new StringBuilder();
+
+			String line;
+			while ((line = br.readLine()) != null) sb.append(line);
+
+			JsonElement jelement = new JsonParser().parse(sb.toString());
+			JsonObject  jobject = jelement.getAsJsonObject();
+			sb.setLength(0);
 			int size = jobject.getAsJsonObject("query").getAsJsonArray("search").size();
 			while(i < size){
 				JsonElement locObj = jobject.getAsJsonObject("query")
@@ -68,12 +68,14 @@ public class DucitDaoImpl implements DucitDAO{
 				sb.append(locObj.getAsJsonObject().get("snippet").getAsString());
 				i++;
 			}
-		} catch(NullPointerException e){
-			return null;
-		}
-		
 
-		return DucitUtils.cleanWikiText(sb.toString());
+
+
+			return DucitUtils.cleanWikiText(sb.toString());
+		} catch(Exception e){
+			return "No hay conexión a internet";
+		}
+
 	}
 
 	public String getSynonyms(String word) throws SQLException {
@@ -90,7 +92,7 @@ public class DucitDaoImpl implements DucitDAO{
 		}
 		return result.replace("|", "-");
 	}
-	
+
 	public String getAntonyms(String word) throws SQLException {
 		String result = "";
 		Statement stmt = conn.createStatement();
@@ -108,13 +110,13 @@ public class DucitDaoImpl implements DucitDAO{
 	public String fixWord(String word) throws SQLException {
 		if(word.length() < 2)
 			return word;
-			
+
 		int min = Integer.MAX_VALUE;
 		String correct = new String(word);
 		Statement stmt = conn.createStatement();
 		String pattern = DucitUtils.getSQLPattern(word);
 		String sql;
-		
+
 		if(word.charAt(word.length()-1) == 'm')
 			sql = "SELECT word FROM word w WHERE w.word REGEXP '" + pattern + "' OR w.word REGEXP '" + pattern.substring(0, pattern.length()-15) + "'"+ " OR w.word REGEXP '" + pattern.substring(0, pattern.length()-22) + "'";
 		else if(word.charAt(word.length()-2) == 'm')
@@ -132,7 +134,7 @@ public class DucitDaoImpl implements DucitDAO{
 				}
 			}
 		}
-		
+
 		return correct;
 	}
 
