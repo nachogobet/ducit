@@ -106,7 +106,7 @@ public class EngineImpl implements Engine {
 			printWithProtocol("error", text, 11);
 			System.exit(1);
 		}
-			
+				
 		if(text.length() > 5)
 			printWithProtocol("plano", text, 1);
 		

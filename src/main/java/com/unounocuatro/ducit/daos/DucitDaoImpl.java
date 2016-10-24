@@ -34,9 +34,7 @@ public class DucitDaoImpl implements DucitDAO{
 		ResultSet rs = stmt.executeQuery(sql);
 		String result = new String();
 
-		while(rs.next()){
-			result += rs.getString(1) + "%";
-		}
+		while(rs.next()) result += rs.getString(1) + "%";
 
 		return result;
 	}

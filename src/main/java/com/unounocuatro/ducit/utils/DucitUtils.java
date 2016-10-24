@@ -18,12 +18,7 @@ public class DucitUtils {
 
 	public static BufferedImage mat2Img(Mat in)
 	{
-		//Imgproc.cvtColor(in, in, Imgproc.COLOR_RGB2GRAY, 0);
-
-		// Create an empty image in matching format
 		BufferedImage gray = new BufferedImage(in.width(), in.height(), BufferedImage.TYPE_BYTE_GRAY);
-
-		// Get the BufferedImage's backing array and copy the pixels directly into it
 		byte[] data = ((DataBufferByte) gray.getRaster().getDataBuffer()).getData();
 		in.get(0, 0, data);
 
@@ -82,9 +77,8 @@ public class DucitUtils {
 					if(image.getRGB(z, j) != Color.BLACK.getRGB())
 						line=false;
 				}
-				if(line){
+				if(line)
 					doCleanLines(image, i, j);
-				}
 				line=true;
 			}
 		}
