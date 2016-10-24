@@ -2,6 +2,7 @@ package com.unounocuatro.ducit.preprocessors;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.opencv.core.Core;
@@ -254,10 +255,11 @@ public  class PreprocessorImpl implements Preprocessor {
 
 	private void GeneraImag(List<Mat> M, String destination, boolean c)
 	{
+		Date d = new Date();
 		for(int i=0;i<M.size();i++)
 			{
 				if(c)
-					Imgcodecs.imwrite("C:/ducit/generadas/IMG_N" + (i+1) + ".jpg", M.get(i));
+					Imgcodecs.imwrite("C:/ducit/generadas/" + d.getHours()+d.getMinutes()+d.getSeconds() + ".jpg", M.get(i));
 				else
 					{
 					Imgproc.cvtColor(M.get(i), M.get(i), Imgproc.COLOR_BGR2GRAY);
