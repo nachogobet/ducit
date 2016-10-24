@@ -16,8 +16,7 @@ public class DucitUtils {
 		return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
 	}
 
-	public static BufferedImage mat2Img(Mat in)
-	{
+	public static BufferedImage mat2Img(Mat in){
 		BufferedImage gray = new BufferedImage(in.width(), in.height(), BufferedImage.TYPE_BYTE_GRAY);
 		byte[] data = ((DataBufferByte) gray.getRaster().getDataBuffer()).getData();
 		in.get(0, 0, data);
