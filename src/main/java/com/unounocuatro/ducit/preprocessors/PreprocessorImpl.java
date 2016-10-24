@@ -150,7 +150,7 @@ public  class PreprocessorImpl implements Preprocessor {
 		}
 
 
-		int xInicial = 0,xFinal = 0,yInicial = 0,yFinal = 0, cont = 0;
+		int xFinal = 0,yInicial = 0, cont = 0;
 		int areaIMG;
 		int limX, limY;
 		if(clr)
@@ -200,10 +200,8 @@ public  class PreprocessorImpl implements Preprocessor {
 					ilist.add(ifin);
 
 				}
-				xInicial=recta.x;
 				xFinal=recta.x + recta.width;
 				yInicial=recta.y;
-				yFinal=recta.y + recta.height;
 				cont++;
 
 			}
@@ -218,6 +216,7 @@ public  class PreprocessorImpl implements Preprocessor {
 
 	//función que genera los output de las imagenes procesadas
 
+	@SuppressWarnings("deprecation")
 	private void GeneraImag(List<Mat> M, String destination, boolean c){
 		Date d = new Date();
 		for(int i=0;i<M.size();i++)

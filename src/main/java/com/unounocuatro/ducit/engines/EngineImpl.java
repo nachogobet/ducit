@@ -28,7 +28,7 @@ public class EngineImpl implements Engine {
 	private static final String PASS = "weblogic1";
 	private static final String DB_URL = "jdbc:mysql://localhost:3306/ducit";
 
-	private BufferedImage image;
+	//private BufferedImage image;
 
 	private ColorScalar[] actions = new ColorScalar[5];
 
@@ -42,7 +42,7 @@ public class EngineImpl implements Engine {
 	
 	private String destination;
 	private DucitDaoImpl dao;
-	private String config;
+	//private String config;
 
 	private static EngineImpl engine = null;
 
@@ -55,13 +55,13 @@ public class EngineImpl implements Engine {
 	}
 
 	public void scan(String filePath, String destination, String config) throws Exception {
-		this.config = config;
+		//this.config = config;
 		this.filePath = filePath;
 		this.destination = destination;
 		setPreprocessor();
 		setProcessor();
 		setActions();
-		setBufferedImage(filePath);
+		//setBufferedImage(filePath);
 		//generatePreview();
 		process();
 	}
@@ -80,6 +80,7 @@ public class EngineImpl implements Engine {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private void generatePreview() throws IOException {
 		File outputfile = new File("./src/main/resources/images/preview.jpg");
 		ImageIO.write(this.preprocessor.doPreprocess(this.filePath, ColorScalar.VIOLET, 4), "jpg", outputfile);	
@@ -160,8 +161,8 @@ public class EngineImpl implements Engine {
 		this.processor = new ProcessorImpl();
 	}
 
-	private void setBufferedImage(String filePath) throws IOException {
+	/*private void setBufferedImage(String filePath) throws IOException {
 		this.image = ImageIO.read(new File(filePath));
-	}
+	}*/
 
 }
