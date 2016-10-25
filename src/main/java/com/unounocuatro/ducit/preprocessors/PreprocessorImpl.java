@@ -222,7 +222,7 @@ public  class PreprocessorImpl implements Preprocessor {
 		for(int i=0;i<M.size();i++)
 		{
 			if(c)
-				Imgcodecs.imwrite("C:/ducit/generadas/" + d.getHours()+d.getMinutes()+d.getSeconds() + ".jpg", M.get(i));
+				Imgcodecs.imwrite("C:/ducit/generadas/" + System.currentTimeMillis() + ".jpg", M.get(i));
 			else
 
 				Imgproc.cvtColor(M.get(i), M.get(i), Imgproc.COLOR_BGR2GRAY);
