@@ -132,7 +132,7 @@ public class DucitUtils {
 		text = text.replaceAll("^\\s+", "");
 		text = text.replaceAll("\\s+$", "");
 		text = text.replaceAll("á", "a").replaceAll("é", "e").replaceAll("í", "i").replaceAll("ó", "o").replaceAll("ú", "u");
-
+		text = text.replace("|", "");
 
 
 		return text;
@@ -350,6 +350,7 @@ public class DucitUtils {
 			i = text.indexOf("<span ");
 		}		
 
+		text= text.replace("|", "");
 		return text;
 	}	
 }
