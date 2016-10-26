@@ -337,6 +337,7 @@ public class DucitUtils {
 		if(text.isEmpty())
 			return text;
 		int i;
+		text = text.substring(text.indexOf("extract")+10, text.length()-7);
 		text = text.replaceAll("</span>", "");
 		i = text.indexOf("<span ");
 		while(i != -1 && i < text.length()-26){

@@ -45,7 +45,7 @@ public class DucitDaoImpl implements DucitDAO{
 	public String getDefinition(String word) {
 		int i=0;
 		try{
-			URL url = new URL("https://es.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + word.replaceAll("(\\r|\\n)", "").replace(" ", "%20") + "&format=json");
+			URL url = new URL("https://es.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=" + word.replaceAll("(\\r|\\n)", "").replace(" ", "%20") + "&format=json");
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");
@@ -62,11 +62,11 @@ public class DucitDaoImpl implements DucitDAO{
 			JsonElement jelement = new JsonParser().parse(sb.toString());
 			JsonObject  jobject = jelement.getAsJsonObject();
 			sb.setLength(0);
-			int size = jobject.getAsJsonObject("query").getAsJsonArray("search").size();
+			int size = jobject.getAsJsonObject("query").getAsJsonObject("pages").size();
 			while(i < size){
 				JsonElement locObj = jobject.getAsJsonObject("query")
-						.getAsJsonArray("search").get(i);
-				sb.append(locObj.getAsJsonObject().get("snippet").getAsString());
+						.getAsJsonObject("pages");
+				sb.append(locObj.getAsJsonObject().toString());
 				i++;
 			}
 
