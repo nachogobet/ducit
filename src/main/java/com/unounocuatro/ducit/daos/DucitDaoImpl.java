@@ -32,11 +32,14 @@ public class DucitDaoImpl implements DucitDAO{
 		String sql;
 		sql = "SELECT meaning FROM word w WHERE w.word LIKE '" + word + "'";
 		ResultSet rs = stmt.executeQuery(sql);
-		String result = new String();
+		String result = new String("SIGNIFICADOS:");
+		int length = result.length();
+			
+		while(rs.next()) result += "\n- " + rs.getString(1);
+		if(result.length() == length)
+			result += "\nNo se encontraron significados para esta palabra";
 
-		while(rs.next()) result += rs.getString(1) + "%";
-
-		return result;
+		return result + "\n";
 	}
 
 	public String getDefinition(String word) {
@@ -77,31 +80,41 @@ public class DucitDaoImpl implements DucitDAO{
 	}
 
 	public String getSynonyms(String word) throws SQLException {
-		String result = "";
+		String result = new String("\nSINONIMOS:");
+		boolean found = false;
 		Statement stmt = conn.createStatement();
 		String sql;
 		sql = "SELECT Synonym FROM word w WHERE w.word LIKE '" + word + "'";
 		ResultSet rs = stmt.executeQuery(sql);
-
+		
 		if(rs.next()){
-			result = rs.getString(1);
-			if(result== null || result.equals("null") || result.isEmpty())
-				return "";
+			found = true;
+			result += "\n" + rs.getString(1);
+			if(result== null || result.contains("null"))
+				return result.replace("null", "") + "\nNo se encontraron sinónimos para esta palabra";
 		}
+		
+		if(!found)
+			result += "\nNo se encontraron sinónimos para esta palabra";
 		return result.replace("|", "-");
 	}
 
 	public String getAntonyms(String word) throws SQLException {
-		String result = "";
+		String result = new String("\nANTONIMOS:");
+		boolean found = false;
 		Statement stmt = conn.createStatement();
 		String sql;
 		sql = "SELECT antonym FROM word w WHERE w.word LIKE '" + word + "'";
 		ResultSet rs = stmt.executeQuery(sql);
 		if(rs.next()){
-			result = rs.getString(1);
-			if(result== null || result.equals("null") || result.isEmpty())
-				return "";
+			found = true;
+			result += "\n" + rs.getString(1);
+			if(result== null || result.contains("null"))
+				return result.replace("null", "") + "\nNo se encontraron antónimos para esta palabra";
 		}
+		if(!found)
+			result += "\nNo se encontraron antónimos para esta palabra";
+		
 		return result.replace("|", "-");
 	}
 

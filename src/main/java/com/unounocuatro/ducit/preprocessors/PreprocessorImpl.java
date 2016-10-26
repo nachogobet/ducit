@@ -2,7 +2,6 @@ package com.unounocuatro.ducit.preprocessors;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.opencv.core.Core;
@@ -46,8 +45,6 @@ public  class PreprocessorImpl implements Preprocessor {
 		case(2):
 			return DucitUtils.mat2Img(gauss);
 		case(3):
-			return DucitUtils.cleanTrash(DucitUtils.mat2Img(adapt));
-		case(4):
 			return DucitUtils.cleanTrash(DucitUtils.mat2Img(adapt));
 		}
 
@@ -215,18 +212,16 @@ public  class PreprocessorImpl implements Preprocessor {
 
 
 	//función que genera los output de las imagenes procesadas
-
-	@SuppressWarnings("deprecation")
 	private void GeneraImag(List<Mat> M, String destination, boolean c){
-		Date d = new Date();
 		for(int i=0;i<M.size();i++)
 		{
 			if(c)
 				Imgcodecs.imwrite("C:/ducit/generadas/" + System.currentTimeMillis() + ".jpg", M.get(i));
 			else
-
+			{
 				Imgproc.cvtColor(M.get(i), M.get(i), Imgproc.COLOR_BGR2GRAY);
-
+				Imgcodecs.imwrite("C:/ducit/texto/" + System.currentTimeMillis() + ".jpg", M.get(i));
+			}
 		}
 	}
 }

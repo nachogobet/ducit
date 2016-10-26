@@ -278,15 +278,11 @@ public class DucitUtils {
 				return true;
 		}
 		case '¡':
-		{
 			if(!Character.isLetter(next))
 				return true;
-		}
 		case '!':
-		{
 			if(!Character.isLetter(previous))
 				return true;
-		}
 		case '-':
 		{
 			if(previous == '.' || next == '.')
@@ -297,7 +293,6 @@ public class DucitUtils {
 				return true;
 		}
 		case '\'':
-			// Ejemplos que arrojarían error:  PEPE '!STA	 |  TAMBI'N
 			if((previous == ' ' && !Character.isLetter(next)) || (Character.isLetter(previous) && !Character.isLetter(next)))
 				return true;
 		case '.':

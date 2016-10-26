@@ -18,7 +18,7 @@ public class ProcessorImpl implements Processor {
 	private Properties properties = new Properties();	
 	
 
-	public String doProcess(BufferedImage image, int functionality) throws Exception {
+	public String doProcess(BufferedImage image) throws Exception {
 		setOCRConfig();
 		if(image == null)
 			return "";
