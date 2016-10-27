@@ -115,6 +115,10 @@ public class DucitUtils {
 
 
 		if(text.length()>2){
+			if(text.charAt(0) != ' ' && text.charAt(0) == ' ')
+				text = text.substring(2);
+			if(text.charAt(text.length()-1) != ' ' && text.charAt(text.length()-2) == ' ')
+				text = text.substring(0, text.length()-2);
 			if(Character.isDigit(text.charAt(0)))
 				text = text.substring(1, text.length());
 			if(Character.isDigit(text.charAt(text.length()-1)))
