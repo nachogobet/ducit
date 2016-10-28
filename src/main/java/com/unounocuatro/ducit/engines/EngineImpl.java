@@ -98,7 +98,7 @@ public class EngineImpl implements Engine {
 			text += this.processor.doProcess(DucitUtils.mat2Img(result.get(i)));
 			text += System.getProperty("line.separator");
 		}
-		text = DucitUtils.cleanPlainText(DucitUtils.cleanText(text));
+		text = DucitUtils.cleanPlainText(DucitUtils.cleanText(text, true));
 		
 			
 		if(text.equals("ERROR: Baja calidad de imagen.")){
@@ -115,7 +115,7 @@ public class EngineImpl implements Engine {
 		String[] array = DucitUtils.getStringArray(result);
 		for(int i=0; i< array.length; i++){
 			if(array[i].length()>2){
-				String word = this.dao.fixWord(DucitUtils.cleanText(array[i]));
+				String word = this.dao.fixWord(DucitUtils.cleanText(array[i], false));
 				printWithProtocol(word, this.dao.getDefinition(word), 4);
 			}			
 		}	
@@ -134,7 +134,7 @@ public class EngineImpl implements Engine {
 		String[] array = DucitUtils.getStringArray(result);
 		for(int i=0; i< array.length; i++){
 			if(array[i].length()>2){
-				String word = this.dao.fixWord(DucitUtils.cleanText(array[i]));
+				String word = this.dao.fixWord(DucitUtils.cleanText(array[i], true));
 				printWithProtocol(word, this.dao.getWordMeaning(word) +this.dao.getSynonyms(word) + this.dao.getAntonyms(word), 2);
 			}			
 		}		

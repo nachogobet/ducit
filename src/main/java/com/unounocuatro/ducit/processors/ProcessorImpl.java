@@ -23,7 +23,7 @@ public class ProcessorImpl implements Processor {
 		if(image == null)
 			return "";
 		String result = instance.doOCR(image).replaceAll("(?m)^[ \t]*\r?\n", "");
-		return DucitUtils.cleanText(result);
+		return DucitUtils.cleanText(result, false);
 	}
 
 	@SuppressWarnings("unused")

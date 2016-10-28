@@ -111,7 +111,7 @@ public class DucitUtils {
 		return words;
 	}
 
-	public static String cleanText(String text) {	
+	public static String cleanText(String text, boolean removeAccents) {	
 
 
 		if(text.length()>2){
@@ -135,7 +135,8 @@ public class DucitUtils {
 		text = text.replaceAll("_","");
 		text = text.replaceAll("^\\s+", "");
 		text = text.replaceAll("\\s+$", "");
-		text = text.replaceAll("á", "a").replaceAll("é", "e").replaceAll("í", "i").replaceAll("ó", "o").replaceAll("ú", "u");
+		if(removeAccents)
+			text = text.replaceAll("á", "a").replaceAll("é", "e").replaceAll("í", "i").replaceAll("ó", "o").replaceAll("ú", "u");
 		text = text.replace("|", "");
 
 
@@ -343,6 +344,8 @@ public class DucitUtils {
 		int i;
 		if(text.contains("extract") && text.lastIndexOf(".") != -1)
 			text = text.substring(text.indexOf("extract")+10, text.lastIndexOf(".")+1);
+		else
+			return "No hay resultados en wikipedia para la palabra marcada";
 		text = text.replaceAll("</span>", "");
 		i = text.indexOf("<span ");
 		while(i != -1 && i < text.length()-26){
