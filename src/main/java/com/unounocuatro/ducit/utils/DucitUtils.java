@@ -338,10 +338,11 @@ public class DucitUtils {
 	}
 
 	public static String cleanWikiText(String text) {
-		if(text.isEmpty())
-			return text;
+		if(text == null || text.isEmpty() || text.contains("missing"))
+			return "No hay resultados en wikipedia para la palabra marcada";
 		int i;
-		text = text.substring(text.indexOf("extract")+10, text.length()-7);
+		if(text.contains("extract") && text.lastIndexOf(".") != -1)
+			text = text.substring(text.indexOf("extract")+10, text.lastIndexOf(".")+1);
 		text = text.replaceAll("</span>", "");
 		i = text.indexOf("<span ");
 		while(i != -1 && i < text.length()-26){

@@ -1,8 +1,11 @@
 package com.unounocuatro.ducit.daos;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -45,7 +48,7 @@ public class DucitDaoImpl implements DucitDAO{
 	public String getDefinition(String word) {
 		int i=0;
 		try{
-			URL url = new URL("https://es.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=" + word.replaceAll("(\\r|\\n)", "").replace(" ", "%20") + "&format=json");
+			URL url = new URL("https://es.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=&format=json&titles=" + word.replaceAll("(\\r|\\n)", "").replace(" ", "%20"));
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");
@@ -73,8 +76,12 @@ public class DucitDaoImpl implements DucitDAO{
 
 
 			return DucitUtils.cleanWikiText(sb.toString());
-		} catch(Exception e){
-			return "No hay conexión a internet";
+		} catch(MalformedURLException e1){
+			return "Mal formato de la url.";
+		} catch(ProtocolException e2){
+			return "Error de protocolo";
+		} catch(IOException e3){
+			return "No hay conexión a Internet";
 		}
 
 	}
