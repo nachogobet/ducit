@@ -98,7 +98,7 @@ public class EngineImpl implements Engine {
 			text += this.processor.doProcess(DucitUtils.mat2Img(result.get(i)));
 			text += System.getProperty("line.separator");
 		}
-		text = DucitUtils.cleanPlainText(DucitUtils.cleanText(text, true));
+		text = DucitUtils.cleanPlainText(DucitUtils.cleanText(text, false));
 		
 			
 		if(text.equals("ERROR: Baja calidad de imagen.")){

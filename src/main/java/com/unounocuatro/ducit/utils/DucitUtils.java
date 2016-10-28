@@ -5,6 +5,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.opencv.core.Mat;
 
@@ -106,7 +108,18 @@ public class DucitUtils {
 
 	public static String[] getStringArray(String result) {
 		String[] words = result.split("\\s+");
-		for (int i = 0; i < words.length; i++) words[i] = words[i].replaceAll("[^\\w]", "");
+		Map<Integer, Character> accents = new HashMap<Integer, Character>();
+		for (int i = 0; i < words.length; i++){
+			for(int j=0; j<words[i].length(); j++){
+				if(words[i].charAt(j)=='á' || words[i].charAt(j)=='é' || words[i].charAt(j)=='í' || words[i].charAt(j)=='ó' || words[i].charAt(j)=='ú')
+					accents.put(j, words[i].charAt(j));
+			}
+			words[i] = words[i].replaceAll("[^\\w]", "");
+			for(int k=0; k<words[i].length(); k++){
+				if(accents.get(k) != null)
+					words[i] = words[i].substring(0, k) + accents.get(k) + words[i].substring(k, words[i].length());
+			}	
+		}
 
 		return words;
 	}
