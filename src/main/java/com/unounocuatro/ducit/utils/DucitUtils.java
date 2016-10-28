@@ -108,17 +108,21 @@ public class DucitUtils {
 
 	public static String[] getStringArray(String result) {
 		String[] words = result.split("\\s+");
+		Integer[] sizes = new Integer[words.length];
 		Map<Integer, Character> accents = new HashMap<Integer, Character>();
 		for (int i = 0; i < words.length; i++){
+			sizes[i] = words[i].length();
 			for(int j=0; j<words[i].length(); j++){
 				if(words[i].charAt(j)=='á' || words[i].charAt(j)=='é' || words[i].charAt(j)=='í' || words[i].charAt(j)=='ó' || words[i].charAt(j)=='ú')
 					accents.put(j, words[i].charAt(j));
 			}
 			words[i] = words[i].replaceAll("[^\\w]", "");
 			for(int k=0; k<words[i].length(); k++){
-				if(accents.get(k) != null)
+				if(accents.get(k) != null && words[i].length() < sizes[i]){
 					words[i] = words[i].substring(0, k) + accents.get(k) + words[i].substring(k, words[i].length());
+				}
 			}	
+			accents = new HashMap<Integer, Character>();
 		}
 
 		return words;
