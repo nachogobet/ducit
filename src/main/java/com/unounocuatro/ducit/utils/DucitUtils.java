@@ -267,7 +267,7 @@ public class DucitUtils {
 			}
 
 			if((float)errors/size > 0.1)
-				textArray[i] = "El segmento en esta posición fue detectado defectuosamente.";	
+				textArray[i] = "La línea " + i+1 + "se encuentra mal resaltada.";	
 		}
 
 		return getTextFromString(textArray);
