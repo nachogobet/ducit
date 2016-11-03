@@ -267,7 +267,7 @@ public class DucitUtils {
 			}
 
 			if((float)errors/size > 0.1)
-				textArray[i] = "La línea " + i+1 + "se encuentra mal resaltada.";	
+				textArray[i] = "La línea en este lugar se encuentra mal resaltada.";	
 		}
 
 		return getTextFromString(textArray);
@@ -276,8 +276,10 @@ public class DucitUtils {
 	private static String getTextFromString(String[] textArray) {
 		StringBuilder strBuilder = new StringBuilder();
 		for (int i = 0; i < textArray.length; i++) {
-			strBuilder.append(textArray[i]);
-			strBuilder.append(System.getProperty("line.separator"));
+			if(textArray.length > 1){
+				strBuilder.append(textArray[i]);
+				strBuilder.append(System.getProperty("line.separator"));
+			}		
 		}
 		return strBuilder.toString();
 	}
