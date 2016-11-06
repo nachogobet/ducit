@@ -276,7 +276,7 @@ public class DucitUtils {
 	private static String getTextFromString(String[] textArray) {
 		StringBuilder strBuilder = new StringBuilder();
 		for (int i = 0; i < textArray.length; i++) {
-			if(textArray.length > 1){
+			if(textArray.length > 0){
 				strBuilder.append(textArray[i]);
 				strBuilder.append(System.getProperty("line.separator"));
 			}		
