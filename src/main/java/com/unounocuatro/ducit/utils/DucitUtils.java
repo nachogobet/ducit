@@ -267,7 +267,7 @@ public class DucitUtils {
 			}
 
 			if((float)errors/size > 0.1)
-				textArray[i] = "La línea en este lugar se encuentra mal resaltada.";	
+				textArray[i] = "Línea mal resaltada.";	
 		}
 
 		return getTextFromString(textArray);
