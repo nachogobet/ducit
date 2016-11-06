@@ -220,7 +220,6 @@ public  class PreprocessorImpl implements Preprocessor {
 			else
 			{
 				Imgproc.cvtColor(M.get(i), M.get(i), Imgproc.COLOR_BGR2GRAY);
-				//Imgcodecs.imwrite("C:/ducit/texto/" + System.currentTimeMillis() + ".jpg", M.get(i));
 			}
 		}
 	}
