@@ -35,7 +35,7 @@ public class DucitDaoImpl implements DucitDAO{
 		String sql;
 		sql = "SELECT meaning FROM word w WHERE w.word LIKE '" + word + "'";
 		ResultSet rs = stmt.executeQuery(sql);
-		String result = new String("SIGNIFICADOS:");
+		String result = "SIGNIFICADOS:";
 		int length = result.length();
 			
 		while(rs.next()) result += "\n- " + rs.getString(1);
@@ -87,7 +87,7 @@ public class DucitDaoImpl implements DucitDAO{
 	}
 
 	public String getSynonyms(String word) throws SQLException {
-		String result = new String("\nSINONIMOS:");
+		String result = "\nSINONIMOS:";
 		boolean found = false;
 		Statement stmt = conn.createStatement();
 		String sql;
@@ -107,7 +107,7 @@ public class DucitDaoImpl implements DucitDAO{
 	}
 
 	public String getAntonyms(String word) throws SQLException {
-		String result = new String("\nANTONIMOS:");
+		String result = "\nANTONIMOS:";
 		boolean found = false;
 		Statement stmt = conn.createStatement();
 		String sql;
@@ -130,7 +130,7 @@ public class DucitDaoImpl implements DucitDAO{
 			return word;
 
 		int min = Integer.MAX_VALUE;
-		String correct = new String(word);
+		String correct = word;
 		Statement stmt = conn.createStatement();
 		String pattern = DucitUtils.getSQLPattern(word);
 		String sql;
