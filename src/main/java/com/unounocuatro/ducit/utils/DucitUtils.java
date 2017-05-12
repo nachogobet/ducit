@@ -162,7 +162,7 @@ public class DucitUtils {
 	}
 
 	public static String getSQLPattern(String word) {
-		String result = new String();
+		String result = "";
 		result+="[a-z]*";
 		for(int i=0; i<word.length(); i++){	
 			if(word.charAt(i) != 'm')
